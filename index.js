@@ -1,5 +1,6 @@
 var express = require('express');
 var app = express();
+var VALIDATION_TOKEN = 'my_token_test'
 
 app.set('port', (process.env.PORT || 5000));
 
