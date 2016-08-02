@@ -1,7 +1,7 @@
 var express = require('express');
 var app = express();
 var VALIDATION_TOKEN = 'my_token_test'
-var PAGE_ACCESS_TOKEN = 'EAAIZAaqMkrS0BABSfZB8RsWYLoBJOhWDhm3BqMDN7C52addwwm0BYds9OBymiZByiE7I4gX03EyS3ZBErOhZARnlnsZC7SwVSQbfb4qjhv8rNE9jgC4liP6goLjoiJO9nX0DZCrP4y6qKRloKCRxtPst0JWNPfuuUefLaJOQ22TEwZDZD'
+var PAGE_ACCESS_TOKEN = 'EAAIZAaqMkrS0BANGjXBsiZC58vUvXEXycj8Sp7IwDjOmRJVB8tQHprhQZAPlyXqFxFvrdSX9V45SNOaSpNNVwdnVg9aKRb1osZB4wqyVQZAb9W0w8FEQKcNTnEk3TIKOnYJSrZCtLtFw3jnnlDAFkq3Okb7ZB4xLjHGKTImV8xrngZDZD'
 
 app.set('port', (process.env.PORT || 5000));
 
@@ -28,7 +28,7 @@ app.get('/webhook', function(req, res) {
 
 app.post('/webhook', function (req, res) {
   var data = req.body;
-
+console.log("Webhook received");
   // Make sure this is a page subscription
   if (data.object == 'page') {
     // Iterate over each entry
