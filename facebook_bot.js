@@ -174,7 +174,7 @@ askOperation = function(response, convo) {
         }
       },
       {
-        pattern: 'WINTER,
+        pattern: 'WINTER',
         callback: function(response,convo) {
           convo.say('Great! I will continue...');
             askTemperature(response, convo);
