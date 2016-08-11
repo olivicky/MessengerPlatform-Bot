@@ -107,8 +107,9 @@ if(ops.lt === false && ops.ltsubdomain !== null) {
 
 var controller = Botkit.facebookbot({
     debug: true,
-    access_token: config.get('pageAccessToken'),
-    verify_token: config.get('validationToken'),
+    access_token: (process.env.page_token) ? (process.env.page_token) : config.get('pageAccessToken'),
+    verify_token: (process.env.verify_token) ? (process.env.verify_token) : config.get('validationToken'),
+
 });
 
 var bot = controller.spawn({
