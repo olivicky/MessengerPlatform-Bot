@@ -66,14 +66,14 @@ This bot demonstrates many of the core features of Botkit:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 // Arbitrary value used to validate a webhook
-const VALIDATION_TOKEN = (process.env.MESSENGER_VALIDATION_TOKEN) ?
-  (process.env.MESSENGER_VALIDATION_TOKEN) :
-  config.get('validationToken');
-
-// Generate a page access token for your page from the App Dashboard
-const PAGE_ACCESS_TOKEN = (process.env.MESSENGER_PAGE_ACCESS_TOKEN) ?
-  (process.env.MESSENGER_PAGE_ACCESS_TOKEN) :
-  config.get('pageAccessToken');
+// const VALIDATION_TOKEN = (process.env.MESSENGER_VALIDATION_TOKEN) ?
+//   (process.env.MESSENGER_VALIDATION_TOKEN) :
+//   config.get('validationToken');
+// 
+// // Generate a page access token for your page from the App Dashboard
+// const PAGE_ACCESS_TOKEN = (process.env.MESSENGER_PAGE_ACCESS_TOKEN) ?
+//   (process.env.MESSENGER_PAGE_ACCESS_TOKEN) :
+//   config.get('pageAccessToken');
 
 // if (!PAGE_ACCESS_TOKEN) {
 //     console.log('Error: Specify page_token in environment or in configuration file');
