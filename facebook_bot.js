@@ -107,8 +107,8 @@ if(ops.lt === false && ops.ltsubdomain !== null) {
 
 var controller = Botkit.facebookbot({
     debug: true,
-    access_token: PAGE_ACCESS_TOKEN,
-    verify_token: VALIDATION_TOKEN,
+    access_token: config.get('pageAccessToken'),
+    verify_token: config.get('validationToken'),
 });
 
 var bot = controller.spawn({
@@ -146,6 +146,7 @@ askObjectId = function(response, convo) {
     convo.next();
   });
 }
+
 askOperation = function(response, convo) {
   convo.ask("What action do you want to perform? Say TURN ON, TURN OFF, WINTER or SUMMER", [
       {
@@ -191,6 +192,7 @@ askOperation = function(response, convo) {
       }
     ]);
 }
+
 askTemperature = function(response, convo) { 
   convo.ask("What temperature do you want?", function(response, convo) {
     convo.say("Ok! The last step.");
@@ -198,6 +200,7 @@ askTemperature = function(response, convo) {
     convo.next();
   });
 }
+
 askFanVelocity = function(response, convo) { 
   convo.ask("What temperature do you want?", function(response, convo) {
     convo.say("Perfect! I update your object");
