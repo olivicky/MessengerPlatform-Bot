@@ -75,15 +75,15 @@ const PAGE_ACCESS_TOKEN = (process.env.MESSENGER_PAGE_ACCESS_TOKEN) ?
   (process.env.MESSENGER_PAGE_ACCESS_TOKEN) :
   config.get('pageAccessToken');
 
-if (!PAGE_ACCESS_TOKEN) {
-    console.log('Error: Specify page_token in environment or in configuration file');
-    process.exit(1);
-}
-
-if (!VALIDATION_TOKEN) {
-    console.log('Error: Specify verify_token in environment or in configuration file');
-    process.exit(1);
-}
+// if (!PAGE_ACCESS_TOKEN) {
+//     console.log('Error: Specify page_token in environment or in configuration file');
+//     process.exit(1);
+// }
+// 
+// if (!VALIDATION_TOKEN) {
+//     console.log('Error: Specify verify_token in environment or in configuration file');
+//     process.exit(1);
+// }
 
 var Botkit = require('./lib/Botkit.js');
 var os = require('os');
