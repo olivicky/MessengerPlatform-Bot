@@ -182,7 +182,7 @@ askOperation = function(response, convo) {
             askTemperature(response, convo);
           convo.next();
         }
-      }
+      },
       {
         default: true,
         callback: function(response,convo) {
