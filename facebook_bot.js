@@ -224,7 +224,7 @@ askFanVelocity = function(response, convo) {
   		}
 
 	});
-    //convo.next();
+    convo.next();
     
   });
 }
