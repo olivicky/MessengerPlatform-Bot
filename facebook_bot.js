@@ -145,6 +145,26 @@ askObjectId = function(response, convo) {
     convo.say("OK");
     askOperation(response, convo);
     convo.next();
+    
+    convo.on('end',function(convo) {
+		console.log("convo end function called");
+  		if (convo.status=='completed') {
+  		
+   		 	// do something useful with the users responses
+    		var res = convo.extractResponses();
+    		console.log("convo end function with status completed and value:" + res);
+
+    		// reference a specific response by key
+    		//var value  = convo.extractResponse('key');
+
+   			 // ... do more stuff...
+
+  		} else {
+    		// something happened that caused the conversation to stop prematurely
+  		}
+
+	});
+	
   });
 }
 
@@ -205,26 +225,9 @@ askTemperature = function(response, convo) {
 askFanVelocity = function(response, convo) { 
   convo.ask("What fan velocity do you want?", function(response, convo) {
     convo.say("Perfect! I update your object");
-    
-    convo.on('end',function(convo) {
-		console.log("convo end function called");
-  		if (convo.status=='completed') {
-  		
-   		 	// do something useful with the users responses
-    		var res = convo.extractResponses();
-    		console.log("convo end function with status completed and value:" + res);
-
-    		// reference a specific response by key
-    		//var value  = convo.extractResponse('key');
-
-   			 // ... do more stuff...
-
-  		} else {
-    		// something happened that caused the conversation to stop prematurely
-  		}
-
-	});
     convo.next();
+    
+    
     
   });
 }
