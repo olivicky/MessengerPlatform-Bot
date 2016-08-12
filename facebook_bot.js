@@ -152,12 +152,17 @@ askObjectId = function(response, convo) {
   		
    		 	// do something useful with the users responses
     		var res = convo.extractResponses();
-    		console.log("convo end function with status completed and value:" + res);
+    		
 
     		// reference a specific response by key
-    		//var value  = convo.extractResponse('key');
+    		var id  = convo.extractResponse('id');
+    		var mode  = convo.extractResponse('mode');
+    		var temperature  = convo.extractResponse('temperature');
+    		var valocity  = convo.extractResponse('velocity');
+    		
+    		console.log("conversation completed with values: id - " + id + " mode - " + mode + " temperature - " + " velocity - " + velocity);
 
-   			 // ... do more stuff...
+   			 // call web service request
 
   		} else {
     		// something happened that caused the conversation to stop prematurely
@@ -165,7 +170,7 @@ askObjectId = function(response, convo) {
 
 	});
 	
-  });
+  }, {"key":"id","multiple":true});
 }
 
 askOperation = function(response, convo) {
@@ -211,7 +216,7 @@ askOperation = function(response, convo) {
           convo.next();
         }
       }
-    ]);
+    ], {"key":"mode","multiple":false});
 }
 
 askTemperature = function(response, convo) { 
@@ -219,7 +224,7 @@ askTemperature = function(response, convo) {
     convo.say("Ok! The last step.");
     askFanVelocity(response, convo);
     convo.next();
-  });
+  }, {"key":"temperature","multiple":true});
 }
 
 askFanVelocity = function(response, convo) { 
@@ -229,5 +234,5 @@ askFanVelocity = function(response, convo) {
     
     
     
-  });
+  }, {"key":"velocity","multiple":true});
 }
