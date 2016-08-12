@@ -170,7 +170,7 @@ askObjectId = function(response, convo) {
 
 	});
 	
-  }, {"key":"id","multiple":true});
+  }, {"key":"id","multiple":false});
 }
 
 askOperation = function(response, convo) {
@@ -224,12 +224,12 @@ askTemperature = function(response, convo) {
     convo.say("Ok! The last step.");
     askFanVelocity(response, convo);
     convo.next();
-  }, {"key":"temperature","multiple":true});
+  }, {"key":"temperature","multiple":false});
 }
 
 askFanVelocity = function(response, convo) { 
   convo.ask("What fan velocity do you want?", function(response, convo) {
     convo.say("Perfect! I update your object");
     convo.next();
-  }, {"key":"velocity","multiple":true});
+  }, {"key":"velocity","multiple":false});
 }
