@@ -155,7 +155,7 @@ askObjectId = function(response, convo) {
     		console.log("convo end function called and completed");
 
     		// reference a specific response by key
-    		 var id  = convo.extractResponse('id');
+    		var id  = convo.extractResponse('id');
      		var mode  = convo.extractResponse('mode');
      		var temperature  = convo.extractResponse('temperature');
      		var velocity  = convo.extractResponse('velocity');
@@ -223,7 +223,7 @@ askOperation = function(response, convo) {
             askTemperature(response, convo);
           convo.next();
         }
-      }
+      },
       {
         default: true,
         callback: function(response,convo) {
