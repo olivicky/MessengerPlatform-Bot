@@ -163,7 +163,7 @@ askObjectId = function(response, convo) {
     		var values = convo.extractResponses();
     		var id  = values.idQuestion;
      		var mode  = values.modeQuestion;
-     		var temperature  = values.temperatureQuestion;
+     		var temperature  = convo.extractResponse(temperatureQuestion);
      		var velocity  = values.fanQuestion;
      		var confort = values.confortQuestion;
 //     		
