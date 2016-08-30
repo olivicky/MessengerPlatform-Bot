@@ -91,6 +91,13 @@ var config = require('config');
 var commandLineArgs = require('command-line-args');
 var localtunnel = require('localtunnel');
 
+
+var idQuestion = "What's the id/nickname of object do you want to control?";
+var modeQuestion = "What action do you want to perform? Say TURN ON, TURN OFF, WINTER, SUMMER, FAN, HUMIDITY";
+var fanQuestion = "What fan velocity do you want?";
+var temperatureQuestion = "What temperature do you want?";
+var confortQuestion = "What confort index do you want?";
+
 const cli = commandLineArgs([
       {name: 'lt', alias: 'l', args: 1, description: 'Use localtunnel.me to make your bot available on the web.',
       type: Boolean, defaultValue: false},
@@ -141,7 +148,7 @@ controller.hears(['start'],'message_received',function(bot,message) {
 });
 
 askObjectId = function(response, convo) {
-  convo.ask("What's the id/nickname of object do you want to control?", function(response, convo) {
+  convo.ask(idQuestion, function(response, convo) {
     convo.say("OK");
     askOperation(response, convo);
     convo.next();
@@ -151,17 +158,16 @@ askObjectId = function(response, convo) {
   		if (convo.status=='completed') {
   		
    		 	// do something useful with the users responses
-    		var res = convo.extractResponses();
-    		console.log("convo end function called and completed");
 
     		// reference a specific response by key
     		var values = convo.extractResponses();
-    		var id  = convo.extractResponse('id');
-     		var mode  = convo.extractResponse('mode');
-     		var temperature  = convo.extractResponse('temperature');
-     		var velocity  = convo.extractResponse('velocity');
+    		var id  = values.idQuestion;
+     		var mode  = values.modeQuestion;
+     		var temperature  = values.temperatureQuestion;
+     		var velocity  = values.fanQuestion;
+     		var confort = values.confortQuestion;
 //     		
-     		console.log("conversation completed with values: id - " + id + " mode - " + mode + " temperature - ", values);
+     		console.log("conversation completed with values: id - " + id + " mode - " + mode + " temperature - " + temperature + " - velocity - " + velocity + " - confort " + confort);
 
    			 // call web service request
 
@@ -176,7 +182,7 @@ askObjectId = function(response, convo) {
 }
 
 askOperation = function(response, convo) {
-  convo.ask("What action do you want to perform? Say TURN ON, TURN OFF, WINTER, SUMMER, FAN, HUMIDITY", [
+  convo.ask(modeQuestion, [
       {
         pattern: 'TURN ON',
         callback: function(response,convo) {
@@ -237,7 +243,7 @@ askOperation = function(response, convo) {
 }
 
 askConfortIndex = function(response, convo) { 
-  convo.ask("What confort index do you want?", function(response, convo) {
+  convo.ask(confortQuestion, function(response, convo) {
     convo.say("Perfect! I update your object");
     convo.silentRepeat();
     convo.next();
@@ -245,7 +251,7 @@ askConfortIndex = function(response, convo) {
 }
 
 askTemperature = function(response, convo) { 
-  convo.ask("What temperature do you want?", function(response, convo) {
+  convo.ask(temperatureQuestion, function(response, convo) {
     convo.say("Ok! The last step.");
     askFanVelocity(response, convo);
     convo.next();
@@ -253,7 +259,7 @@ askTemperature = function(response, convo) {
 }
 
 askFanVelocity = function(response, convo) { 
-  convo.ask("What fan velocity do you want?", function(response, convo) {
+  convo.ask(fanQuestion, function(response, convo) {
     convo.say("Perfect! I update your object");
     convo.silentRepeat();
     convo.next();
