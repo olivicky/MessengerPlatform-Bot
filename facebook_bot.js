@@ -161,7 +161,7 @@ askObjectId = function(response, convo) {
      		var temperature  = convo.extractResponse('temperature');
      		var velocity  = convo.extractResponse('velocity');
 //     		
-//     		console.log("conversation completed with values: id - " + id + " mode - " + mode + " temperature - ");
+     		console.log("conversation completed with values: id - " + id + " mode - " + mode + " temperature - ");
 
    			 // call web service request
 
@@ -255,6 +255,7 @@ askTemperature = function(response, convo) {
 askFanVelocity = function(response, convo) { 
   convo.ask("What fan velocity do you want?", function(response, convo) {
     convo.say("Perfect! I update your object");
+    convo.silentRepeat();
     convo.next();
   });
 }
