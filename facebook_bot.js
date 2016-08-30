@@ -147,10 +147,7 @@ askObjectId = function(response, convo) {
     convo.next();
     
     convo.on('end',function(convo) {
-    	convo.say({
-                text: "Game Over",
-                channel: message.user
-            });
+    	convo.say("Game Over");
 		console.log("convo end function called");
   		if (convo.status=='completed') {
   		
