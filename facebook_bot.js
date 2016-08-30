@@ -155,10 +155,10 @@ askObjectId = function(response, convo) {
     		console.log("convo end function called and completed");
 
     		// reference a specific response by key
-    		// var id  = convo.extractResponse('id');
-//     		var mode  = convo.extractResponse('mode');
-//     		var temperature  = convo.extractResponse('temperature');
-//     		//var valocity  = convo.extractResponse('velocity');
+    		 var id  = convo.extractResponse('id');
+     		var mode  = convo.extractResponse('mode');
+     		var temperature  = convo.extractResponse('temperature');
+     		var velocity  = convo.extractResponse('velocity');
 //     		
 //     		console.log("conversation completed with values: id - " + id + " mode - " + mode + " temperature - ");
 
@@ -175,12 +175,12 @@ askObjectId = function(response, convo) {
 }
 
 askOperation = function(response, convo) {
-  convo.ask("What action do you want to perform? Say TURN ON, TURN OFF, WINTER or SUMMER", [
+  convo.ask("What action do you want to perform? Say TURN ON, TURN OFF, WINTER, SUMMER, FAN, HUMIDITY", [
       {
         pattern: 'TURN ON',
         callback: function(response,convo) {
           convo.say('OK!');
-          askTemperature(response, convo);
+          askConfortIndex(response, convo);
           convo.next();
         }
       },
@@ -188,7 +188,6 @@ askOperation = function(response, convo) {
         pattern: 'TURN OFF',
         callback: function(response,convo) {
           convo.say('Great! I will continue...');
-            askTemperature(response, convo);
           convo.next();
 
         }
@@ -210,6 +209,22 @@ askOperation = function(response, convo) {
         }
       },
       {
+        pattern: 'FAN',
+        callback: function(response,convo) {
+          convo.say('Great! I will continue...');
+            askTemperature(response, convo);
+          convo.next();
+        }
+      },
+      {
+        pattern: 'HUMIDITY',
+        callback: function(response,convo) {
+          convo.say('Great! I will continue...');
+            askTemperature(response, convo);
+          convo.next();
+        }
+      }
+      {
         default: true,
         callback: function(response,convo) {
           convo.say('Please insert one of the suggested answer');
@@ -218,6 +233,13 @@ askOperation = function(response, convo) {
         }
       }
     ]);
+}
+
+askConfortIndex = function(response, convo) { 
+  convo.ask("What confort index do you want?", function(response, convo) {
+    convo.say("Perfect! I update your object");
+    convo.next();
+  });
 }
 
 askTemperature = function(response, convo) { 
