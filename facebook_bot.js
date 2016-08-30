@@ -160,12 +160,11 @@ askObjectId = function(response, convo) {
    		 	// do something useful with the users responses
 
     		// reference a specific response by key
-    		var values = convo.extractResponses();
-    		var id  = values.idQuestion;
-     		var mode  = values.modeQuestion;
+    		var id  = convo.extractResponse(idQuestion);
+     		var mode  = convo.extractResponse(modeQuestion);
      		var temperature  = convo.extractResponse(temperatureQuestion);
-     		var velocity  = values.fanQuestion;
-     		var confort = values.confortQuestion;
+     		var velocity  = convo.extractResponse(fanQuestion);
+     		var confort = convo.extractResponse(confortQuestion);
 //     		
      		console.log("conversation completed with values: id - " + id + " mode - " + mode + " temperature - " + temperature + " - velocity - " + velocity + " - confort " + confort);
 
