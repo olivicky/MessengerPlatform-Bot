@@ -161,7 +161,7 @@ askObjectId = function(response, convo) {
      		var temperature  = convo.extractResponse('temperature');
      		var velocity  = convo.extractResponse('velocity');
 //     		
-     		console.log("conversation completed with values: id - " + id + " mode - " + mode + " temperature - " + values);
+     		console.log("conversation completed with values: id - " + id + " mode - " + mode + " temperature - ", values);
 
    			 // call web service request
 
