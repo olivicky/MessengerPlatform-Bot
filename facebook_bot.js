@@ -239,6 +239,7 @@ askOperation = function(response, convo) {
 askConfortIndex = function(response, convo) { 
   convo.ask("What confort index do you want?", function(response, convo) {
     convo.say("Perfect! I update your object");
+    convo.silentRepeat();
     convo.next();
   });
 }
