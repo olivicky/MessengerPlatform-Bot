@@ -147,7 +147,6 @@ askObjectId = function(response, convo) {
     convo.next();
     
     convo.on('end',function(convo) {
-    	convo.say("Game Over");
 		console.log("convo end function called");
   		if (convo.status=='completed') {
   		
@@ -156,12 +155,13 @@ askObjectId = function(response, convo) {
     		console.log("convo end function called and completed");
 
     		// reference a specific response by key
+    		var values = convo.extractResponses();
     		var id  = convo.extractResponse('id');
      		var mode  = convo.extractResponse('mode');
      		var temperature  = convo.extractResponse('temperature');
      		var velocity  = convo.extractResponse('velocity');
 //     		
-     		console.log("conversation completed with values: id - " + id + " mode - " + mode + " temperature - ");
+     		console.log("conversation completed with values: id - " + id + " mode - " + mode + " temperature - " + values);
 
    			 // call web service request
 
@@ -188,7 +188,7 @@ askOperation = function(response, convo) {
       {
         pattern: 'TURN OFF',
         callback: function(response,convo) {
-          convo.say('Great! I will continue...');
+          askTurnOff(response, convo);
           convo.next();
 
         }
@@ -258,4 +258,26 @@ askFanVelocity = function(response, convo) {
     convo.silentRepeat();
     convo.next();
   });
+}
+
+askTurnOff = function(response, convo){
+convo.ask('Are you sure you want to turn off?', [
+        {
+            pattern: bot.utterances.yes,
+            callback: function(response, convo) {
+                convo.say('Perfect! I turn off your object');
+                convo.silentRepeat();
+    			convo.next();
+            }
+        },
+    {
+        pattern: bot.utterances.no,
+        default: true,
+        callback: function(response, convo) {
+            askOperation(response, convo);
+            convo.next();
+        }
+    }
+    ]);
+
 }
