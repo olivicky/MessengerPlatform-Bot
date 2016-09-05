@@ -191,11 +191,11 @@ askObjectId = function(response, convo) {
 
 var richiesta = request.post(options, function (error, response, body) {
   if (!error && response.statusCode == 200) {
-    console.log(body) // Show the HTML for the Google homepage.
+    console.log(body); // Show the HTML for the Google homepage.
   }
   else if(error){
-  console.log(error)
-})
+  console.log(error);
+});
 
 
 
