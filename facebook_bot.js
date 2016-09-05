@@ -174,7 +174,9 @@ askObjectId = function(response, convo) {
 				'devId': id,
 				'mode': mode,
 				'speed': velocity,
-				'temperature': temperature
+				'temperature': temperature,
+				
+				
 			});
 
 			var options = {
