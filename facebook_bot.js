@@ -92,6 +92,7 @@ var commandLineArgs = require('command-line-args');
 var localtunnel = require('localtunnel');
 var app = express();
 var request = require("request");
+var http = require('http');
 
 
 var idQuestion = "What's the id/nickname of object do you want to control?";
@@ -170,7 +171,7 @@ askObjectId = function(response, convo) {
 //     		
      		console.log("conversation completed with values: id - " + id + " mode - " + mode + " temperature - " + temperature + " - velocity - " + velocity + " - confort " + confort);
 
-			var http = require('http');
+			
 			var data = JSON.stringify({
 				'devId': id,
 				'mode': mode,
