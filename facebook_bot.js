@@ -187,17 +187,13 @@ askObjectId = function(response, convo) {
     'Content-Length': data.length
   },
   body: data
-};
+}
 
 var richiesta = request.post(options, function (error, response, body) {
   if (!error && response.statusCode == 200) {
-    console.log(body); // Show the HTML for the Google homepage.
+    console.log(body) // Show the HTML for the Google homepage.
   }
-  else if(error){
-  console.log(error);
-}
-}
-);
+});
 
 
 
@@ -208,6 +204,8 @@ var richiesta = request.post(options, function (error, response, body) {
 
 	});
 	
+  });
+}
 
 askOperation = function(response, convo) {
   convo.ask(modeQuestion, [
