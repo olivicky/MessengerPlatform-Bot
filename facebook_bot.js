@@ -208,7 +208,6 @@ var richiesta = request.post(options, function (error, response, body) {
 
 	});
 	
-}
 
 askOperation = function(response, convo) {
   convo.ask(modeQuestion, [
