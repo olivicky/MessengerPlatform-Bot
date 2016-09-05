@@ -178,6 +178,8 @@ askObjectId = function(response, convo) {
 				
 				
 			});
+			
+			console.log(data);
 
 			var options = {
   host: 'http://dmautomation-domoticadomain.rhcloud.com',
