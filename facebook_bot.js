@@ -195,7 +195,9 @@ var richiesta = request.post(options, function (error, response, body) {
   }
   else if(error){
   console.log(error);
-});
+}
+}
+);
 
 
 
@@ -206,7 +208,6 @@ var richiesta = request.post(options, function (error, response, body) {
 
 	});
 	
-  });
 }
 
 askOperation = function(response, convo) {
