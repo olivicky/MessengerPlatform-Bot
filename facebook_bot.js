@@ -90,7 +90,7 @@ var os = require('os');
 var config = require('config');
 var commandLineArgs = require('command-line-args');
 var localtunnel = require('localtunnel');
-var http = require('http');
+var request = require('request');;
 
 
 var idQuestion = "What's the id/nickname of object do you want to control?";
@@ -175,37 +175,28 @@ askObjectId = function(response, convo) {
 				'mode': mode,
 				'speed': velocity,
 				'temperature': temperature,
-				
-				
 			});
 			
 			console.log(data);
 
 			var options = {
-  host: 'http://dmautomation-domoticadomain.rhcloud.com',
-  port: '80',
-  path: '/addBotAction',
-  method: 'POST',
+  url: 'http://dmautomation-domoticadomain.rhcloud.com/addBotAction',
+  
   headers: {
     'Content-Type': 'application/json; charset=utf-8',
     'Content-Length': data.length
-  }
+  },
+  body: data
 };
 
-var req = http.request(options, function(res) {
-  var msg = '';
+var richiesta = request.post(options, function (error, response, body) {
+  if (!error && response.statusCode == 200) {
+    console.log(body) // Show the HTML for the Google homepage.
+  }
+  else if(error){
+  console.log(error)
+})
 
-  res.setEncoding('utf8');
-  res.on('data', function(chunk) {
-    msg += chunk;
-  });
-  res.on('end', function() {
-    console.log(JSON.parse(msg));
-  });
-});
-
-req.write(data);
-req.end();	
 
 
   		} else {
