@@ -90,8 +90,6 @@ var os = require('os');
 var config = require('config');
 var commandLineArgs = require('command-line-args');
 var localtunnel = require('localtunnel');
-var app = express();
-var request = require("request");
 var http = require('http');
 
 
