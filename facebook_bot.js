@@ -90,6 +90,8 @@ var os = require('os');
 var config = require('config');
 var commandLineArgs = require('command-line-args');
 var localtunnel = require('localtunnel');
+var app = express();
+var request = require("request");
 
 
 var idQuestion = "What's the id/nickname of object do you want to control?";
@@ -168,7 +170,40 @@ askObjectId = function(response, convo) {
 //     		
      		console.log("conversation completed with values: id - " + id + " mode - " + mode + " temperature - " + temperature + " - velocity - " + velocity + " - confort " + confort);
 
-   			 // call web service request
+			var http = require('http');
+			var data = JSON.stringify({
+				'devId': id,
+				'mode': mode,
+				'speed': velocity,
+				'temperature': temperature
+			});
+
+			var options = {
+  host: 'http://dmautomation-domoticadomain.rhcloud.com',
+  port: '80',
+  path: '/addBotAction',
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json; charset=utf-8',
+    'Content-Length': data.length
+  }
+};
+
+var req = http.request(options, function(res) {
+  var msg = '';
+
+  res.setEncoding('utf8');
+  res.on('data', function(chunk) {
+    msg += chunk;
+  });
+  res.on('end', function() {
+    console.log(JSON.parse(msg));
+  });
+});
+
+req.write(data);
+req.end();	
+
 
   		} else {
   		console.log("convo end function called prematurely");
