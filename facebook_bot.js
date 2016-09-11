@@ -158,7 +158,7 @@ controller.hears(['ciao'], 'message_received', function(bot, message) {
 askObjectId = function(response, convo) {
     convo.ask(idQuestion, function(response, convo) {
         convo.say("OK");
-        askOperation(response, convo);
+        askObjectPassword(response, convo);
         convo.next();
 
         convo.on('end', function(convo) {
