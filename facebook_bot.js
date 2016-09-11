@@ -299,9 +299,16 @@ askObjectPassword = function(response, convo) {
         var richiesta = request.post(options, function(error, response, body) {
             if (!error && response.statusCode == 200) {
                 console.log(body) // Show the HTML for the Google homepage.
-                convo.say("Bene! Siamo pronti per iniziare.");
-                askOperation(response, convo);
-                convo.next();
+                if(body == true){
+                	convo.say("Bene! Siamo pronti per iniziare.");
+                	askOperation(response, convo);
+                	convo.next();
+                }
+                else{
+                	convo.say("Password errata. Riprova o chiudi la chat.");
+                	convo.repeat();
+                	convo.next();
+                }
             } else {
                 convo.say("Password errata. Riprova o chiudi la chat.");
                 convo.repeat();
