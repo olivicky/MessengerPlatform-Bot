@@ -318,10 +318,12 @@ askObjectPassword = function(response, convo) {
                 }
                 else{
                 	convo.say("Password errata. Riprova o chiudi la chat.");
+                	convo.next();
                 	convo.stop();
                 }
             } else {
                 convo.say("Password errata. Riprova o chiudi la chat.");
+                convo.next();
                 convo.stop();
             }
         });
