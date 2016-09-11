@@ -89,7 +89,7 @@ var commandLineArgs = require('command-line-args');
 var localtunnel = require('localtunnel');
 var request = require('request');;
 
-
+var url = 'http://dmautomation-domoticadomain.rhcloud.com';
 var idQuestion = "Ciao quale dispositivo vuoi controllare?";
 var passwordQuestion = "Inserisci la password: "
 var modeQuestion = "Che operazione vuoi compiere? Scrivi AUTOMATICO, SPEGNI, INVERNO, ESTATE, VENTILATORE, DEUMIDIFICATORE";
@@ -151,7 +151,7 @@ controller.setupWebserver(process.env.PORT || 5000, function(err, webserver) {
 });
 
 
-controller.hears(['ciao'], 'message_received', function(bot, message) {
+controller.hears(['ciao', 'CIAO', 'Ciao'], 'message_received', function(bot, message) {
     bot.startConversation(message, askObjectId);
 });
 
@@ -188,7 +188,7 @@ askObjectId = function(response, convo) {
                 console.log(data);
 
                 var options = {
-                    url: 'http://dmautomation-domoticadomain.rhcloud.com/addBotAction',
+                    url: url + '/addBotAction',
 
                     headers: {
                         'Content-Type': 'application/json; charset=utf-8',
@@ -199,8 +199,14 @@ askObjectId = function(response, convo) {
 
                 var richiesta = request.post(options, function(error, response, body) {
                     if (!error && response.statusCode == 200) {
-                        console.log(body) // Show the HTML for the Google homepage.
-                        convo.say('Operazione effettuata. Ho completato le tue richieste. Ciao a presto.');
+                        console.log(body)
+                        var response = JSON.parse(body); // Show the HTML for the Google homepage.
+                		if(response.response == 'true'){ // Show the HTML for the Google homepage.
+                        	convo.say('Operazione effettuata. Ho completato le tue richieste. Ciao a presto.');
+                        }
+                        else{
+                        	convo.say("Operazione non effettuata. Contatta l'amministratore.");
+                        }
                     } else {
                         convo.say("Operazione non effettuata. Contatta l'amministratore.");
                     }
@@ -287,7 +293,7 @@ askObjectPassword = function(response, convo) {
         console.log(data);
 
         var options = {
-            url: 'http://dmautomation-domoticadomain.rhcloud.com/checkDevice',
+            url: url + '/checkDevice',
 
             headers: {
                 'Content-Type': 'application/json; charset=utf-8',
@@ -322,6 +328,7 @@ askObjectPassword = function(response, convo) {
 
 askConfortIndex = function(response, convo) {
     convo.ask(confortQuestion, function(response, convo) {
+		console.log("risposta al valore di confort: " + response);
         convo.say("Perfect! I update your object");
         convo.silentRepeat();
         convo.next();
