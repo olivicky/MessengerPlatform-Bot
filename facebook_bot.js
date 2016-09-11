@@ -159,7 +159,7 @@ askObjectId = function(response, convo) {
     convo.ask(idQuestion, function(response, convo) {
         convo.say("OK");
         askObjectPassword(response, convo);
-        //convo.next();
+        convo.next();
 
         convo.on('end', function(convo) {
             console.log("convo end function called");
@@ -309,12 +309,6 @@ askObjectPassword = function(response, convo) {
             }
         });
 
-
-
-
-        convo.say("Perfect! Start with next step");
-        askOperation(response, convo);
-        convo.next();
     });
 }
 
