@@ -335,7 +335,7 @@ askObjectPassword = function(response, convo) {
 askConfortIndex = function(response, convo) {
     convo.ask(confortQuestion, function(response, convo) {
 		console.log("risposta al valore di confort: " + response);
-        convo.say("Perfect! I update your object");
+        convo.say("Perfetto, comando inviato");
         convo.silentRepeat();
         convo.next();
     });
