@@ -172,10 +172,17 @@ askObjectId = function(response, convo) {
                 var mode = convo.extractResponse(modeQuestion);
                 var temperature = convo.extractResponse(temperatureQuestion);
                 var velocity = convo.extractResponse(fanQuestion);
-                var confort = convo.extractResponse(confortQuestion);
+                var indice = convo.extractResponse(confortQuestion);
                 var modalità;
+                var confort;
+                if (indice == null){
+                	confort = "-1";
+                }
+                else{
+                	confort = indice;
+                }
                 //     		
-                console.log("conversation completed with values: id - " + alias + " mode - " + mode + " temperature - " + temperature + " - velocity - " + velocity);
+                console.log("conversation completed with values: id - " + alias + " mode - " + mode + " temperature - " + temperature + " - velocity - " + velocity + " - confort" + confort);
                 
                 switch (mode) {
     				case "AUTOMATICO":
@@ -227,11 +234,11 @@ askObjectId = function(response, convo) {
                         var response = JSON.parse(body); 
                 		if(response.response == "true"){ 
                         	convo.say('Operazione effettuata. Ho completato le tue richieste. Ciao a presto.');
-                        	convo.next();
+                        	
                         }
                         else{
                         	convo.say("Operazione non effettuata. Contatta l'amministratore.");
-                        	convo.next();
+                        	
                         }
                     } else {
                         convo.say("Operazione non effettuata. Contatta l'amministratore.");
