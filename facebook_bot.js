@@ -234,13 +234,11 @@ askObjectId = function(response, convo) {
                         var response = JSON.parse(body); 
                 		if(response.response == "true"){ 
                 			console.log("Entrato nell'if perchè la risposta è true");
-                        	convo.say('Operazione effettuata. Ho completato le tue richieste. Ciao a presto.');
-                        	convo.next();
+                        	bot.say('Operazione effettuata. Ho completato le tue richieste. Ciao a presto.');
                         }
                         else{
                         	console.log("Entrato nell'else perchè la risposta è false");
-                        	convo.say("Operazione non effettuata. Contatta l'amministratore.");
-                        	convo.next();
+                        	bot.say("Operazione non effettuata. Contatta l'amministratore.");
                         }
                     } else {
                         convo.say("Operazione non effettuata. Contatta l'amministratore.");
