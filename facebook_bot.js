@@ -280,7 +280,8 @@ askObjectPassword = function(response, convo) {
         var alias = convo.extractResponse(idQuestion);
 
         var data = JSON.stringify({
-            'alias': alias 'password': password
+            'alias': alias,
+            'password': password
         });
 
         console.log(data);
