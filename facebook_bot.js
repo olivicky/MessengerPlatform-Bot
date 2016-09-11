@@ -197,6 +197,7 @@ askObjectId = function(response, convo) {
                     body: data
                 }
 
+				if(mode != null){
                 var richiesta = request.post(options, function(error, response, body) {
                     if (!error && response.statusCode == 200) {
                         console.log(body)
@@ -211,6 +212,10 @@ askObjectId = function(response, convo) {
                         convo.say("Operazione non effettuata. Contatta l'amministratore.");
                     }
                 });
+                }
+                else{
+                	convo.stop();
+                }
 
 
 
