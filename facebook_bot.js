@@ -64,7 +64,6 @@ This bot demonstrates many of the core features of Botkit:
     -> http://howdy.ai/botkit
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-
 // Arbitrary value used to validate a webhook
 // const VALIDATION_TOKEN = (process.env.MESSENGER_VALIDATION_TOKEN) ?
 //   (process.env.MESSENGER_VALIDATION_TOKEN) :
@@ -74,7 +73,6 @@ This bot demonstrates many of the core features of Botkit:
 // const PAGE_ACCESS_TOKEN = (process.env.MESSENGER_PAGE_ACCESS_TOKEN) ?
 //   (process.env.MESSENGER_PAGE_ACCESS_TOKEN) :
 //   config.get('pageAccessToken');
-
 // if (!PAGE_ACCESS_TOKEN) {
 //     console.log('Error: Specify page_token in environment or in configuration file');
 //     process.exit(1);
@@ -84,7 +82,6 @@ This bot demonstrates many of the core features of Botkit:
 //     console.log('Error: Specify verify_token in environment or in configuration file');
 //     process.exit(1);
 // }
-
 var Botkit = require('./lib/Botkit.js');
 var os = require('os');
 var config = require('config');
@@ -100,16 +97,24 @@ var fanQuestion = "A che velocità vuoi impostare il condizionatore?";
 var temperatureQuestion = "Quale temperatura vuoi impostare?";
 var confortQuestion = "Che indice benessere preferisci?";
 
-const cli = commandLineArgs([
-      {name: 'lt', alias: 'l', args: 1, description: 'Use localtunnel.me to make your bot available on the web.',
-      type: Boolean, defaultValue: false},
-      {name: 'ltsubdomain', alias: 's', args: 1,
-      description: 'Custom subdomain for the localtunnel.me URL. This option can only be used together with --lt.',
-      type: String, defaultValue: null},
-   ]);
+const cli = commandLineArgs([{
+    name: 'lt',
+    alias: 'l',
+    args: 1,
+    description: 'Use localtunnel.me to make your bot available on the web.',
+    type: Boolean,
+    defaultValue: false
+}, {
+    name: 'ltsubdomain',
+    alias: 's',
+    args: 1,
+    description: 'Custom subdomain for the localtunnel.me URL. This option can only be used together with --lt.',
+    type: String,
+    defaultValue: null
+}, ]);
 
 const ops = cli.parse();
-if(ops.lt === false && ops.ltsubdomain !== null) {
+if (ops.lt === false && ops.ltsubdomain !== null) {
     console.log("error: --ltsubdomain can only be used together with --lt.");
     process.exit();
 }
@@ -121,14 +126,15 @@ var controller = Botkit.facebookbot({
 
 });
 
-var bot = controller.spawn({
-});
+var bot = controller.spawn({});
 
 controller.setupWebserver(process.env.PORT || 5000, function(err, webserver) {
     controller.createWebhookEndpoints(webserver, bot, function() {
         console.log('ONLINE!');
-        if(ops.lt) {
-            var tunnel = localtunnel(process.env.PORT || 5000, {subdomain: ops.ltsubdomain}, function(err, tunnel) {
+        if (ops.lt) {
+            var tunnel = localtunnel(process.env.PORT || 5000, {
+                subdomain: ops.ltsubdomain
+            }, function(err, tunnel) {
                 if (err) {
                     console.log(err);
                     process.exit();
@@ -145,257 +151,240 @@ controller.setupWebserver(process.env.PORT || 5000, function(err, webserver) {
 });
 
 
-controller.hears(['ciao'],'message_received',function(bot,message) {
-  bot.startConversation(message, askObjectId);
+controller.hears(['ciao'], 'message_received', function(bot, message) {
+    bot.startConversation(message, askObjectId);
 });
 
 askObjectId = function(response, convo) {
-  convo.ask(idQuestion, function(response, convo) {
-    convo.say("OK");
-    askOperation(response, convo);
-    convo.next();
-    
-    convo.on('end',function(convo) {
-		console.log("convo end function called");
-  		if (convo.status=='completed') {
-  		
-   		 	// do something useful with the users responses
+    convo.ask(idQuestion, function(response, convo) {
+        convo.say("OK");
+        askOperation(response, convo);
+        convo.next();
 
-    		// reference a specific response by key
-    		var alias  = convo.extractResponse(idQuestion);
-     		var mode  = convo.extractResponse(modeQuestion);
-     		var temperature  = convo.extractResponse(temperatureQuestion);
-     		var velocity  = convo.extractResponse(fanQuestion);
-     		var confort = convo.extractResponse(confortQuestion);
-//     		
-     		console.log("conversation completed with values: id - " + id + " mode - " + mode + " temperature - " + temperature + " - velocity - " + velocity + " - confort " + confort);
+        convo.on('end', function(convo) {
+            console.log("convo end function called");
+            if (convo.status == 'completed') {
 
-			
-			var data = JSON.stringify({
-				'alias': alias,
-				'mode': mode,
-				'speed': velocity,
-				'temperature': temperature,
-				'confort': confort
-			});
-			
-			console.log(data);
+                // do something useful with the users responses
 
-			var options = {
-  url: 'http://dmautomation-domoticadomain.rhcloud.com/addBotAction',
-  
-  headers: {
-    'Content-Type': 'application/json; charset=utf-8',
-    'Content-Length': data.length
-  },
-  body: data
-}
-
-var richiesta = request.post(options, function (error, response, body) {
-  if (!error && response.statusCode == 200) {
-    console.log(body) // Show the HTML for the Google homepage.
-    convo.say('Operazione effettuata. Ho completato le tue richieste. Ciao a presto.');
-  }
-  else{
-  	convo.say("Operazione non effettuata. Contatta l'amministratore.");
-  }
-});
+                // reference a specific response by key
+                var alias = convo.extractResponse(idQuestion);
+                var mode = convo.extractResponse(modeQuestion);
+                var temperature = convo.extractResponse(temperatureQuestion);
+                var velocity = convo.extractResponse(fanQuestion);
+                var confort = convo.extractResponse(confortQuestion);
+                //     		
+                console.log("conversation completed with values: id - " + id + " mode - " + mode + " temperature - " + temperature + " - velocity - " + velocity + " - confort " + confort);
 
 
+                var data = JSON.stringify({
+                    'alias': alias,
+                    'mode': mode,
+                    'speed': velocity,
+                    'temperature': temperature,
+                    'confort': confort
+                });
 
-  		} else {
-  		console.log("convo end function called prematurely");
-    		// something happened that caused the conversation to stop prematurely
-  		}
+                console.log(data);
 
-	});
-	
-  });
+                var options = {
+                    url: 'http://dmautomation-domoticadomain.rhcloud.com/addBotAction',
+
+                    headers: {
+                        'Content-Type': 'application/json; charset=utf-8',
+                        'Content-Length': data.length
+                    },
+                    body: data
+                }
+
+                var richiesta = request.post(options, function(error, response, body) {
+                    if (!error && response.statusCode == 200) {
+                        console.log(body) // Show the HTML for the Google homepage.
+                        convo.say('Operazione effettuata. Ho completato le tue richieste. Ciao a presto.');
+                    } else {
+                        convo.say("Operazione non effettuata. Contatta l'amministratore.");
+                    }
+                });
+
+
+
+            } else {
+                console.log("convo end function called prematurely");
+                // something happened that caused the conversation to stop prematurely
+            }
+
+        });
+
+    });
 }
 
 askOperation = function(response, convo) {
-  convo.ask(modeQuestion, [
-      {
+    convo.ask(modeQuestion, [{
         pattern: 'AUTOMATICO',
-        callback: function(response,convo) {
-          convo.say('OK!');
-          askConfortIndex(response, convo);
-          convo.next();
+        callback: function(response, convo) {
+            convo.say('OK!');
+            askConfortIndex(response, convo);
+            convo.next();
         }
-      },
-      {
+    }, {
         pattern: 'SPEGNI',
-        callback: function(response,convo) {
-          askTurnOff(response, convo);
-          convo.next();
+        callback: function(response, convo) {
+            askTurnOff(response, convo);
+            convo.next();
 
         }
-      },
-      {
+    }, {
         pattern: 'ESTATE',
-        callback: function(response,convo) {
-          convo.say('Bene! continuiamo...');
+        callback: function(response, convo) {
+            convo.say('Bene! continuiamo...');
             askTemperature(response, convo);
-          convo.next();
+            convo.next();
         }
-      },
-      {
+    }, {
         pattern: 'INVERNO',
-        callback: function(response,convo) {
-          convo.say('Bene! continuiamo......');
+        callback: function(response, convo) {
+            convo.say('Bene! continuiamo......');
             askTemperature(response, convo);
-          convo.next();
+            convo.next();
         }
-      },
-      {
+    }, {
         pattern: 'VENTILATORE',
-        callback: function(response,convo) {
-          convo.say('Bene! continuiamo......');
+        callback: function(response, convo) {
+            convo.say('Bene! continuiamo......');
             askTemperature(response, convo);
-          convo.next();
+            convo.next();
         }
-      },
-      {
+    }, {
         pattern: 'DEUMIDIFICATORE',
-        callback: function(response,convo) {
-          convo.say('Bene! continuiamo......');
+        callback: function(response, convo) {
+            convo.say('Bene! continuiamo......');
             askTemperature(response, convo);
-          convo.next();
+            convo.next();
         }
-      },
-      {
+    }, {
         default: true,
-        callback: function(response,convo) {
-          convo.say('Please insert one of the suggested answer');
-          convo.repeat();
-          convo.next();
+        callback: function(response, convo) {
+            convo.say('Please insert one of the suggested answer');
+            convo.repeat();
+            convo.next();
         }
-      }
-    ]);
+    }]);
 }
 
-askObjectPassword = function(response, convo) { 
+askObjectPassword = function(response, convo) {
 
-  convo.ask(passwordQuestion, function(response, convo) {
-  
-  // reference a specific response by key
-    		var password  = convo.extractResponse(passwordQuestion);
-    		var alias = convo.extractResponse(idQuestion);
-     		     		
-			var data = JSON.stringify({
-				'alias': alias
-				'password': password
-			});
-			
-			console.log(data);
+    convo.ask(passwordQuestion, function(response, convo) {
 
-			var options = {
-  url: 'http://dmautomation-domoticadomain.rhcloud.com/checkDevice',
-  
-  headers: {
-    'Content-Type': 'application/json; charset=utf-8',
-    'Content-Length': data.length
-  },
-  body: data
-}
+        // reference a specific response by key
+        var password = convo.extractResponse(passwordQuestion);
+        var alias = convo.extractResponse(idQuestion);
 
-var richiesta = request.post(options, function (error, response, body) {
-  if (!error && response.statusCode == 200) {
-    console.log(body) // Show the HTML for the Google homepage.
-    convo.say("Bene! Siamo pronti per iniziare.");
-    askOperation(response, convo);
-    convo.next();
-  }
-  else{
-  	convo.say("Password errata. Riprova o chiudi la chat.");
-  	convo.repeat();
-  	convo.next();
-  }
-});
+        var data = JSON.stringify({
+            'alias': alias 'password': password
+        });
 
-  
-  
-  
-  
-  
-  
-    convo.say("Perfect! Start with next step");
-    askOperation(response, convo);
-    convo.next();
-  });
-}
+        console.log(data);
 
-askConfortIndex = function(response, convo) { 
-  convo.ask(confortQuestion, function(response, convo) {
-    convo.say("Perfect! I update your object");
-    convo.silentRepeat();
-    convo.next();
-  });
-}
+        var options = {
+            url: 'http://dmautomation-domoticadomain.rhcloud.com/checkDevice',
 
-askTemperature = function(response, convo) { 
-  convo.ask(temperatureQuestion, function(response, convo) {
-    convo.say("Ok!");
-    askFanVelocity(response, convo);
-    convo.next();
-  });
-}
+            headers: {
+                'Content-Type': 'application/json; charset=utf-8',
+                'Content-Length': data.length
+            },
+            body: data
+        }
 
-askFanVelocity = function(response, convo) { 
-  convo.ask(fanQuestion, function(response, convo) {
-    convo.say("Perfetto!");
-    askRecap(response, convo);
-    convo.next();
-  });
-}
-
-askTurnOff = function(response, convo){
-convo.ask('Sei sicuro di voler spegnere il dispositivo?', [
-        {
-            pattern: bot.utterances.yes,
-            callback: function(response, convo) {
-                convo.say('Perfetto! Spengo il dispositivo.');
-                convo.silentRepeat();
-    			convo.next();
+        var richiesta = request.post(options, function(error, response, body) {
+            if (!error && response.statusCode == 200) {
+                console.log(body) // Show the HTML for the Google homepage.
+                convo.say("Bene! Siamo pronti per iniziare.");
+                askOperation(response, convo);
+                convo.next();
+            } else {
+                convo.say("Password errata. Riprova o chiudi la chat.");
+                convo.repeat();
+                convo.next();
             }
-        },
-    {
+        });
+
+
+
+
+        convo.say("Perfect! Start with next step");
+        askOperation(response, convo);
+        convo.next();
+    });
+}
+
+askConfortIndex = function(response, convo) {
+    convo.ask(confortQuestion, function(response, convo) {
+        convo.say("Perfect! I update your object");
+        convo.silentRepeat();
+        convo.next();
+    });
+}
+
+askTemperature = function(response, convo) {
+    convo.ask(temperatureQuestion, function(response, convo) {
+        convo.say("Ok!");
+        askFanVelocity(response, convo);
+        convo.next();
+    });
+}
+
+askFanVelocity = function(response, convo) {
+    convo.ask(fanQuestion, function(response, convo) {
+        convo.say("Perfetto!");
+        askRecap(response, convo);
+        convo.next();
+    });
+}
+
+askTurnOff = function(response, convo) {
+    convo.ask('Sei sicuro di voler spegnere il dispositivo?', [{
+        pattern: bot.utterances.yes,
+        callback: function(response, convo) {
+            convo.say('Perfetto! Spengo il dispositivo.');
+            convo.silentRepeat();
+            convo.next();
+        }
+    }, {
         pattern: bot.utterances.no,
         default: true,
         callback: function(response, convo) {
             askOperation(response, convo);
             convo.next();
         }
-    }
-    ]);
+    }]);
 
 }
 
-askRecap = function(response, convo){
-var alias  = convo.extractResponse(idQuestion);
-     		var mode  = convo.extractResponse(modeQuestion);
-     		var temperature  = convo.extractResponse(temperatureQuestion);
-     		var velocity  = convo.extractResponse(fanQuestion);
-     		var confort = convo.extractResponse(confortQuestion);
 
 
-convo.ask('Sei sicuro di voler cambiare lo stato del dispositivo ' +  alias + ' modalità: ' + mode + ' temperatura: ' + temperature + ' velocità: ' + velocity + ' confort: ' + confort + '.', [
-        {
-            pattern: bot.utterances.yes,
-            callback: function(response, convo) {
-                convo.say('Comando inviato');
-                convo.silentRepeat();
-    			convo.next();
-            }
-        },
-    {
+askRecap = function(response, convo) {
+    var alias = convo.extractResponse(idQuestion);
+    var mode = convo.extractResponse(modeQuestion);
+    var temperature = convo.extractResponse(temperatureQuestion);
+    var velocity = convo.extractResponse(fanQuestion);
+    var confort = convo.extractResponse(confortQuestion);
+
+
+    convo.ask('Sei sicuro di voler cambiare lo stato del dispositivo ' + alias + ' modalità: ' + mode + ' temperatura: ' + temperature + ' velocità: ' + velocity + ' confort: ' + confort + '.', [{
+        pattern: bot.utterances.yes,
+        callback: function(response, convo) {
+            convo.say('Comando inviato');
+            convo.silentRepeat();
+            convo.next();
+        }
+    }, {
         pattern: bot.utterances.no,
         default: true,
         callback: function(response, convo) {
             askOperation(response, convo);
             convo.next();
         }
-    }
-    ]);
+    }]);
+
 
 }
