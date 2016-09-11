@@ -174,7 +174,7 @@ askObjectId = function(response, convo) {
                 var velocity = convo.extractResponse(fanQuestion);
                 var confort = convo.extractResponse(confortQuestion);
                 //     		
-                console.log("conversation completed with values: id - " + alias + " mode - " + mode + " temperature - " + temperature + " - velocity - " + velocity + " - confort " + confort);
+                console.log("conversation completed with values: id - " + alias + " mode - " + mode + " temperature - " + temperature + " - velocity - " + velocity);
 
 
                 var data = JSON.stringify({
@@ -198,15 +198,18 @@ askObjectId = function(response, convo) {
                 }
 
 				if(mode != null){
+				console.log("Entrato nell'if dove mode è diverso da null");
                 var richiesta = request.post(options, function(error, response, body) {
                     if (!error && response.statusCode == 200) {
                         console.log(body)
                         var response = JSON.parse(body); // Show the HTML for the Google homepage.
                 		if(response.response == 'true'){ // Show the HTML for the Google homepage.
                         	convo.say('Operazione effettuata. Ho completato le tue richieste. Ciao a presto.');
+                        	convo.next();
                         }
                         else{
                         	convo.say("Operazione non effettuata. Contatta l'amministratore.");
+                        	convo.next();
                         }
                     } else {
                         convo.say("Operazione non effettuata. Contatta l'amministratore.");
