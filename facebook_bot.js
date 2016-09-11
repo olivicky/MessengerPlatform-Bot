@@ -93,11 +93,12 @@ var localtunnel = require('localtunnel');
 var request = require('request');;
 
 
-var idQuestion = "What's the id/nickname of object do you want to control?";
-var modeQuestion = "What action do you want to perform? Say TURN ON, TURN OFF, WINTER, SUMMER, FAN, HUMIDITY";
-var fanQuestion = "What fan velocity do you want?";
-var temperatureQuestion = "What temperature do you want?";
-var confortQuestion = "What confort index do you want?";
+var idQuestion = "Ciao quale dispositivo vuoi controllare?";
+var passwordQuestion = "Inserisci la password: "
+var modeQuestion = "Che operazione vuoi compiere? Scrivi AUTOMATICO, SPEGNI, INVERNO, ESTATE, VENTILATORE, DEUMIDIFICATORE";
+var fanQuestion = "A che velocità vuoi impostare il condizionatore?";
+var temperatureQuestion = "Quale temperatura vuoi impostare?";
+var confortQuestion = "Che indice benessere preferisci?";
 
 const cli = commandLineArgs([
       {name: 'lt', alias: 'l', args: 1, description: 'Use localtunnel.me to make your bot available on the web.',
@@ -144,7 +145,7 @@ controller.setupWebserver(process.env.PORT || 5000, function(err, webserver) {
 });
 
 
-controller.hears(['start'],'message_received',function(bot,message) {
+controller.hears(['ciao'],'message_received',function(bot,message) {
   bot.startConversation(message, askObjectId);
 });
 
@@ -161,7 +162,7 @@ askObjectId = function(response, convo) {
    		 	// do something useful with the users responses
 
     		// reference a specific response by key
-    		var id  = convo.extractResponse(idQuestion);
+    		var alias  = convo.extractResponse(idQuestion);
      		var mode  = convo.extractResponse(modeQuestion);
      		var temperature  = convo.extractResponse(temperatureQuestion);
      		var velocity  = convo.extractResponse(fanQuestion);
@@ -171,10 +172,11 @@ askObjectId = function(response, convo) {
 
 			
 			var data = JSON.stringify({
-				'devId': id,
+				'alias': alias,
 				'mode': mode,
 				'speed': velocity,
 				'temperature': temperature,
+				'confort': confort
 			});
 			
 			console.log(data);
@@ -192,6 +194,10 @@ askObjectId = function(response, convo) {
 var richiesta = request.post(options, function (error, response, body) {
   if (!error && response.statusCode == 200) {
     console.log(body) // Show the HTML for the Google homepage.
+    convo.say('Operazione effettuata. Ho completato le tue richieste. Ciao a presto.');
+  }
+  else{
+  	convo.say("Operazione non effettuata. Contatta l'amministratore.");
   }
 });
 
@@ -210,7 +216,7 @@ var richiesta = request.post(options, function (error, response, body) {
 askOperation = function(response, convo) {
   convo.ask(modeQuestion, [
       {
-        pattern: 'TURN ON',
+        pattern: 'AUTOMATICO',
         callback: function(response,convo) {
           convo.say('OK!');
           askConfortIndex(response, convo);
@@ -218,7 +224,7 @@ askOperation = function(response, convo) {
         }
       },
       {
-        pattern: 'TURN OFF',
+        pattern: 'SPEGNI',
         callback: function(response,convo) {
           askTurnOff(response, convo);
           convo.next();
@@ -226,33 +232,33 @@ askOperation = function(response, convo) {
         }
       },
       {
-        pattern: 'SUMMER',
+        pattern: 'ESTATE',
         callback: function(response,convo) {
-          convo.say('Great! I will continue...');
+          convo.say('Bene! continuiamo...');
             askTemperature(response, convo);
           convo.next();
         }
       },
       {
-        pattern: 'WINTER',
+        pattern: 'INVERNO',
         callback: function(response,convo) {
-          convo.say('Great! I will continue...');
+          convo.say('Bene! continuiamo......');
             askTemperature(response, convo);
           convo.next();
         }
       },
       {
-        pattern: 'FAN',
+        pattern: 'VENTILATORE',
         callback: function(response,convo) {
-          convo.say('Great! I will continue...');
+          convo.say('Bene! continuiamo......');
             askTemperature(response, convo);
           convo.next();
         }
       },
       {
-        pattern: 'HUMIDITY',
+        pattern: 'DEUMIDIFICATORE',
         callback: function(response,convo) {
-          convo.say('Great! I will continue...');
+          convo.say('Bene! continuiamo......');
             askTemperature(response, convo);
           convo.next();
         }
@@ -268,6 +274,57 @@ askOperation = function(response, convo) {
     ]);
 }
 
+askObjectPassword = function(response, convo) { 
+
+  convo.ask(passwordQuestion, function(response, convo) {
+  
+  // reference a specific response by key
+    		var password  = convo.extractResponse(passwordQuestion);
+    		var alias = convo.extractResponse(idQuestion);
+     		     		
+			var data = JSON.stringify({
+				'alias': alias
+				'password': password
+			});
+			
+			console.log(data);
+
+			var options = {
+  url: 'http://dmautomation-domoticadomain.rhcloud.com/checkDevice',
+  
+  headers: {
+    'Content-Type': 'application/json; charset=utf-8',
+    'Content-Length': data.length
+  },
+  body: data
+}
+
+var richiesta = request.post(options, function (error, response, body) {
+  if (!error && response.statusCode == 200) {
+    console.log(body) // Show the HTML for the Google homepage.
+    convo.say("Bene! Siamo pronti per iniziare.");
+    askOperation(response, convo);
+    convo.next();
+  }
+  else{
+  	convo.say("Password errata. Riprova o chiudi la chat.");
+  	convo.repeat();
+  	convo.next();
+  }
+});
+
+  
+  
+  
+  
+  
+  
+    convo.say("Perfect! Start with next step");
+    askOperation(response, convo);
+    convo.next();
+  });
+}
+
 askConfortIndex = function(response, convo) { 
   convo.ask(confortQuestion, function(response, convo) {
     convo.say("Perfect! I update your object");
@@ -278,7 +335,7 @@ askConfortIndex = function(response, convo) {
 
 askTemperature = function(response, convo) { 
   convo.ask(temperatureQuestion, function(response, convo) {
-    convo.say("Ok! The last step.");
+    convo.say("Ok!");
     askFanVelocity(response, convo);
     convo.next();
   });
@@ -286,18 +343,47 @@ askTemperature = function(response, convo) {
 
 askFanVelocity = function(response, convo) { 
   convo.ask(fanQuestion, function(response, convo) {
-    convo.say("Perfect! I update your object");
-    convo.silentRepeat();
+    convo.say("Perfetto!");
+    askRecap(response, convo);
     convo.next();
   });
 }
 
 askTurnOff = function(response, convo){
-convo.ask('Are you sure you want to turn off?', [
+convo.ask('Sei sicuro di voler spegnere il dispositivo?', [
         {
             pattern: bot.utterances.yes,
             callback: function(response, convo) {
-                convo.say('Perfect! I turn off your object');
+                convo.say('Perfetto! Spengo il dispositivo.');
+                convo.silentRepeat();
+    			convo.next();
+            }
+        },
+    {
+        pattern: bot.utterances.no,
+        default: true,
+        callback: function(response, convo) {
+            askOperation(response, convo);
+            convo.next();
+        }
+    }
+    ]);
+
+}
+
+askRecap = function(response, convo){
+var alias  = convo.extractResponse(idQuestion);
+     		var mode  = convo.extractResponse(modeQuestion);
+     		var temperature  = convo.extractResponse(temperatureQuestion);
+     		var velocity  = convo.extractResponse(fanQuestion);
+     		var confort = convo.extractResponse(confortQuestion);
+
+
+convo.ask('Sei sicuro di voler cambiare lo stato del dispositivo ' +  alias + ' modalità: ' + mode + ' temperatura: ' + temperature + ' velocità: ' + velocity + ' confort: ' + confort + '.', [
+        {
+            pattern: bot.utterances.yes,
+            callback: function(response, convo) {
+                convo.say('Comando inviato');
                 convo.silentRepeat();
     			convo.next();
             }
