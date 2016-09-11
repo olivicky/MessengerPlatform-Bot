@@ -222,6 +222,7 @@ askObjectId = function(response, convo) {
             } else {
                 console.log("convo end function called prematurely");
                 // something happened that caused the conversation to stop prematurely
+                convo.stop();
             }
 
         });
@@ -318,13 +319,13 @@ askObjectPassword = function(response, convo) {
                 }
                 else{
                 	convo.say("Password errata. Riprova o chiudi la chat.");
+                	convo.silentRepeat();
                 	convo.next();
-                	convo.stop();
                 }
             } else {
                 convo.say("Password errata. Riprova o chiudi la chat.");
+                convo.silentRepeat();
                 convo.next();
-                convo.stop();
             }
         });
 
