@@ -166,88 +166,8 @@ askObjectId = function(response, convo) {
             if (convo.status == 'completed') {
 
                 // do something useful with the users responses
-
-                // reference a specific response by key
-                var alias = convo.extractResponse(idQuestion);
-                var mode = convo.extractResponse(modeQuestion);
-                var temperature = convo.extractResponse(temperatureQuestion);
-                var velocity = convo.extractResponse(fanQuestion);
-                var indice = convo.extractResponse(confortQuestion);
-                var modalità;
-                var confort;
-                if (indice == ""){
-                	confort = "-1";
-                }
-                else{
-                	confort = indice;
-                }
-                //     		
-                console.log("conversation completed with values: id - " + alias + " mode - " + mode + " temperature - " + temperature + " - velocity - " + velocity + " - confort" + confort);
+				convo.stop();
                 
-                switch (mode) {
-    				case "AUTOMATICO":
-        				modalità = "5";
-        				break;
-    				case "SPEGNI":
-        				modalità = "0";
-        				break;
-    				case "ESTATE":
-       	 				modalità = "2";
-        				break;
-    				case "INVERNO":
-        				modalità = "1";
-        				break;
-    				case "VENTILATORE":
-        				modalità = "4";
-        				break;
-    				case "DEUMIDIFICATORE":
-        				modalità = "3";
-        				break;
-    			}
-
-
-                var data = JSON.stringify({
-                    'alias': alias,
-                    'mode': modalità,
-                    'speed': velocity,
-                    'temperature': temperature,
-                    'confort': confort
-                });
-
-                console.log(data);
-
-                var options = {
-                    url: url + '/addBotAction',
-
-                    headers: {
-                        'Content-Type': 'application/json; charset=utf-8',
-                        'Content-Length': data.length
-                    },
-                    body: data
-                }
-
-				if(mode != null){
-				console.log("Entrato nell'if dove mode è diverso da null");
-                var richiesta = request.post(options, function(error, response, body) {
-                    if (!error && response.statusCode == 200) {
-                        console.log(body)
-                        var response = JSON.parse(body); 
-                		if(response.response == "true"){ 
-                			console.log("Entrato nell'if perchè la risposta è true");
-                        	bot.say('Operazione effettuata. Ho completato le tue richieste. Ciao a presto.');
-                        }
-                        else{
-                        	console.log("Entrato nell'else perchè la risposta è false");
-                        	bot.say("Operazione non effettuata. Contatta l'amministratore.");
-                        }
-                    } else {
-                        convo.say("Operazione non effettuata. Contatta l'amministratore.");
-                    }
-                });
-                }
-                else{
-                	convo.stop();
-                }
 
 
 
@@ -422,8 +342,93 @@ askRecap = function(response, convo) {
         pattern: bot.utterances.yes,
         callback: function(response, convo) {
             convo.say('Comando inviato');
-            convo.silentRepeat();
-            convo.next();
+            // reference a specific response by key
+                var alias = convo.extractResponse(idQuestion);
+                var mode = convo.extractResponse(modeQuestion);
+                var temperature = convo.extractResponse(temperatureQuestion);
+                var velocity = convo.extractResponse(fanQuestion);
+                var indice = convo.extractResponse(confortQuestion);
+                var modalità;
+                var confort;
+                if (indice == ""){
+                	confort = "-1";
+                }
+                else{
+                	confort = indice;
+                }
+                //     		
+                console.log("conversation completed with values: id - " + alias + " mode - " + mode + " temperature - " + temperature + " - velocity - " + velocity + " - confort" + confort);
+                
+                switch (mode) {
+    				case "AUTOMATICO":
+        				modalità = "5";
+        				break;
+    				case "SPEGNI":
+        				modalità = "0";
+        				break;
+    				case "ESTATE":
+       	 				modalità = "2";
+        				break;
+    				case "INVERNO":
+        				modalità = "1";
+        				break;
+    				case "VENTILATORE":
+        				modalità = "4";
+        				break;
+    				case "DEUMIDIFICATORE":
+        				modalità = "3";
+        				break;
+    			}
+
+
+                var data = JSON.stringify({
+                    'alias': alias,
+                    'mode': modalità,
+                    'speed': velocity,
+                    'temperature': temperature,
+                    'confort': confort
+                });
+
+                console.log(data);
+
+                var options = {
+                    url: url + '/addBotAction',
+
+                    headers: {
+                        'Content-Type': 'application/json; charset=utf-8',
+                        'Content-Length': data.length
+                    },
+                    body: data
+                }
+
+				if(mode != null){
+				console.log("Entrato nell'if dove mode è diverso da null");
+                var richiesta = request.post(options, function(error, response, body) {
+                    if (!error && response.statusCode == 200) {
+                        console.log(body)
+                        var response = JSON.parse(body); 
+                		if(response.response == "true"){ 
+                			console.log("Entrato nell'if perchè la risposta è true");
+                        	convo.say('Operazione effettuata. Ho completato le tue richieste. Ciao a presto.');
+                        	convo.silenRepeat();
+                        	convo.next();
+                        }
+                        else{
+                        	console.log("Entrato nell'else perchè la risposta è false");
+                        	convo.say("Operazione non effettuata. Contatta l'amministratore.");
+                        	convo.silenRepeat();
+                        	convo.next();
+                        }
+                    } else {
+                        convo.say("Operazione non effettuata. Contatta l'amministratore.");
+                        convo.silenRepeat();
+                        	convo.next();
+                    }
+                });
+                }
+                else{
+                	convo.stop();
+                }
         }
     }, {
         pattern: bot.utterances.no,
