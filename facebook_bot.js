@@ -233,6 +233,7 @@ askObjectId = function(response, convo) {
                         console.log(body)
                         var response = JSON.parse(body); 
                 		if(response.response == "true"){ 
+                			console.log("Entrato nell'if perchè la risposta è true");
                         	convo.say('Operazione effettuata. Ho completato le tue richieste. Ciao a presto.');
                         	convo.next();
                         }
