@@ -175,7 +175,7 @@ askObjectId = function(response, convo) {
                 var indice = convo.extractResponse(confortQuestion);
                 var modalità;
                 var confort;
-                if (indice == null){
+                if (indice == ""){
                 	confort = "-1";
                 }
                 else{
