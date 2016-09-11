@@ -174,7 +174,7 @@ askObjectId = function(response, convo) {
                 var velocity = convo.extractResponse(fanQuestion);
                 var confort = convo.extractResponse(confortQuestion);
                 //     		
-                console.log("conversation completed with values: id - " + id + " mode - " + mode + " temperature - " + temperature + " - velocity - " + velocity + " - confort " + confort);
+                console.log("conversation completed with values: id - " + alias + " mode - " + mode + " temperature - " + temperature + " - velocity - " + velocity + " - confort " + confort);
 
 
                 var data = JSON.stringify({
