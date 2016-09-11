@@ -298,8 +298,9 @@ askObjectPassword = function(response, convo) {
 
         var richiesta = request.post(options, function(error, response, body) {
             if (!error && response.statusCode == 200) {
-                console.log(body) // Show the HTML for the Google homepage.
-                if(body == true){
+                console.log(body)
+                var response = JSON.parse(body); // Show the HTML for the Google homepage.
+                if(response.response == 'true'){
                 	convo.say("Bene! Siamo pronti per iniziare.");
                 	askOperation(response, convo);
                 	convo.next();
