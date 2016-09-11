@@ -173,13 +173,35 @@ askObjectId = function(response, convo) {
                 var temperature = convo.extractResponse(temperatureQuestion);
                 var velocity = convo.extractResponse(fanQuestion);
                 var confort = convo.extractResponse(confortQuestion);
+                var modalità;
                 //     		
                 console.log("conversation completed with values: id - " + alias + " mode - " + mode + " temperature - " + temperature + " - velocity - " + velocity);
+                
+                switch (mode) {
+    				case "AUTOMATICO":
+        				modalità = "5";
+        				break;
+    				case "SPEGNI":
+        				modalità = "0";
+        				break;
+    				case "ESTATE":
+       	 				modalità = "2";
+        				break;
+    				case "INVERNO":
+        				modalità = "1";
+        				break;
+    				case "VENTILATORE":
+        				modalità = "4";
+        				break;
+    				case "DEUMIDIFICATORE":
+        				modalità = "3";
+        				break;
+    			}
 
 
                 var data = JSON.stringify({
                     'alias': alias,
-                    'mode': mode,
+                    'mode': modalità,
                     'speed': velocity,
                     'temperature': temperature,
                     'confort': confort
@@ -202,8 +224,8 @@ askObjectId = function(response, convo) {
                 var richiesta = request.post(options, function(error, response, body) {
                     if (!error && response.statusCode == 200) {
                         console.log(body)
-                        var response = JSON.parse(body); // Show the HTML for the Google homepage.
-                		if(response.response == 'true'){ // Show the HTML for the Google homepage.
+                        var response = JSON.parse(body); 
+                		if(response.response == "true"){ 
                         	convo.say('Operazione effettuata. Ho completato le tue richieste. Ciao a presto.');
                         	convo.next();
                         }
