@@ -190,7 +190,7 @@ askOperation = function(response, convo) {
     }, {
         pattern: 'SPEGNI',
         callback: function(response, convo) {
-            askTurnOff(response, convo);
+            askRecap(response,convo);
             convo.next();
 
         }
@@ -333,9 +333,20 @@ askRecap = function(response, convo) {
     var temperature = convo.extractResponse(temperatureQuestion);
     var velocity = convo.extractResponse(fanQuestion);
     var confort = convo.extractResponse(confortQuestion);
+    var recapQuestion;
+    
+    if(mode == "AUTOMATICO"){
+    	recapQuestion = "Sei sicuro di voler cambiare lo stato del dispositivo " + alias + " in modalità: " + mode + " e indice di confort: " + confort + "?";
+    }
+    else if(mode == "SPEGNI"){
+    	recapQuestion = 'Sei sicuro di voler spegnere il dispositivo?";
+    }
+    else{
+    	recapQuestion = "Sei sicuro di voler cambiare lo stato del dispositivo " + alias + " in modalità: " + mode + " temperatura: " + temperature + " e velocità: " + velocity + "?";
+    }
 
 
-    convo.ask('Sei sicuro di voler cambiare lo stato del dispositivo ' + alias + ' modalità: ' + mode + ' temperatura: ' + temperature + ' velocità: ' + velocity + ' confort: ' + confort + '.', [{
+    convo.ask(recapQuestion, [{
         pattern: bot.utterances.yes,
         callback: function(response, convo) {
             // do something useful with the users responses
