@@ -365,6 +365,16 @@ askRecap = function(response, convo) {
                 else{
                 	confort = indice;
                 }
+                
+                if(temperature == ""){
+                	temperature = "-1";
+                }
+                
+                if(velocity == ""){
+                	velocity = "-1";
+                }
+                
+                
                 //     		
                 console.log("conversation completed with values: id - " + alias + " mode - " + mode + " temperature - " + temperature + " - velocity - " + velocity + " - confort" + confort);
                 
