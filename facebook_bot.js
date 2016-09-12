@@ -181,42 +181,42 @@ askObjectId = function(response, convo) {
 
 askOperation = function(response, convo) {
     convo.ask(modeQuestion, [{
-        pattern: 'AUTOMATICO',
+        pattern: new RegExp(/^(AUTOMATICO|automatico|Automatico)/i),
         callback: function(response, convo) {
             convo.say('OK!');
             askConfortIndex(response, convo);
             convo.next();
         }
     }, {
-        pattern: 'SPEGNI',
+        pattern: new RegExp(/^(SPEGNI|spegni|Spegni|Spento|spento)/i),
         callback: function(response, convo) {
             askRecap(response,convo);
             convo.next();
 
         }
     }, {
-        pattern: 'ESTATE',
+        pattern: new RegExp(/^(ESTATE|estate|Estate|freddo|Freddo)/i),
         callback: function(response, convo) {
             convo.say('Bene! continuiamo...');
             askTemperature(response, convo);
             convo.next();
         }
     }, {
-        pattern: 'INVERNO',
+        pattern: new RegExp(/^(INVERNO|inverno|Inverno|caldo|Caldo)/i),
         callback: function(response, convo) {
             convo.say('Bene! continuiamo......');
             askTemperature(response, convo);
             convo.next();
         }
     }, {
-        pattern: 'VENTILATORE',
+        pattern: new RegExp(/^(VENTILATORE|ventilatore|Deumidificatore)/i),
         callback: function(response, convo) {
             convo.say('Bene! continuiamo......');
             askTemperature(response, convo);
             convo.next();
         }
     }, {
-        pattern: 'DEUMIDIFICATORE',
+        pattern: new RegExp(/^(DEUMIDIFICATORE|deumidificatore|Deumidificatore)/i),
         callback: function(response, convo) {
             convo.say('Bene! continuiamo......');
             askTemperature(response, convo);
