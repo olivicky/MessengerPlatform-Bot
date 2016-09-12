@@ -165,10 +165,7 @@ askObjectId = function(response, convo) {
             console.log("convo end function called");
             if (convo.status == 'completed') {
 
-                // do something useful with the users responses
-				convo.stop();
                 
-
 
 
             } else {
@@ -341,8 +338,9 @@ askRecap = function(response, convo) {
     convo.ask('Sei sicuro di voler cambiare lo stato del dispositivo ' + alias + ' modalità: ' + mode + ' temperatura: ' + temperature + ' velocità: ' + velocity + ' confort: ' + confort + '.', [{
         pattern: bot.utterances.yes,
         callback: function(response, convo) {
-            convo.say('Comando inviato');
-            // reference a specific response by key
+            // do something useful with the users responses
+
+                // reference a specific response by key
                 var alias = convo.extractResponse(idQuestion);
                 var mode = convo.extractResponse(modeQuestion);
                 var temperature = convo.extractResponse(temperatureQuestion);
@@ -410,25 +408,28 @@ askRecap = function(response, convo) {
                 		if(response.response == "true"){ 
                 			console.log("Entrato nell'if perchè la risposta è true");
                         	convo.say('Operazione effettuata. Ho completato le tue richieste. Ciao a presto.');
-                        	convo.silenRepeat();
+                        	convo.silentRepeat();
                         	convo.next();
                         }
                         else{
                         	console.log("Entrato nell'else perchè la risposta è false");
                         	convo.say("Operazione non effettuata. Contatta l'amministratore.");
-                        	convo.silenRepeat();
+                        	convo.silentRepeat();
                         	convo.next();
                         }
                     } else {
                         convo.say("Operazione non effettuata. Contatta l'amministratore.");
-                        convo.silenRepeat();
-                        	convo.next();
+                        convo.silentRepeat();
+                        convo.next();
                     }
                 });
                 }
                 else{
-                	convo.stop();
+                	convo.say("Operazione non effettuata. Contatta l'amministratore.");
+                        convo.silentRepeat();
+                        convo.next();
                 }
+
         }
     }, {
         pattern: bot.utterances.no,
