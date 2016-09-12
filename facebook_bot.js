@@ -339,7 +339,7 @@ askRecap = function(response, convo) {
     	recapQuestion = "Sei sicuro di voler cambiare lo stato del dispositivo " + alias + " in modalità: " + mode + " e indice di confort: " + confort + "?";
     }
     else if(mode == "SPEGNI"){
-    	recapQuestion = 'Sei sicuro di voler spegnere il dispositivo?";
+    	recapQuestion = "Sei sicuro di voler spegnere il dispositivo?";
     }
     else{
     	recapQuestion = "Sei sicuro di voler cambiare lo stato del dispositivo " + alias + " in modalità: " + mode + " temperatura: " + temperature + " e velocità: " + velocity + "?";
