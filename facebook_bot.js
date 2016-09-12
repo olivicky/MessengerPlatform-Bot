@@ -225,7 +225,7 @@ askOperation = function(response, convo) {
     }, {
         default: true,
         callback: function(response, convo) {
-            convo.say('Please insert one of the suggested answer');
+            convo.say('Si prega di inserire una delle risposte suggerite.s');
             convo.repeat();
             convo.next();
         }
@@ -358,6 +358,8 @@ askRecap = function(response, convo) {
                 var indice = convo.extractResponse(confortQuestion);
                 var modalità;
                 var confort;
+                var temperatura;
+                var velocità;
                 if (indice == ""){
                 	confort = "-1";
                 }
@@ -366,16 +368,23 @@ askRecap = function(response, convo) {
                 }
                 
                 if(temperature == ""){
-                	temperature = "-1";
+                	temperatura = "-1";
+                }
+                else{
+                	temperatura = temperature;
                 }
                 
+                
                 if(velocity == ""){
-                	velocity = "-1";
+                	velocità = "-1";
+                }
+                else{
+                	velocità = velocity;
                 }
                 
                 
                 //     		
-                console.log("conversation completed with values: id - " + alias + " mode - " + mode + " temperature - " + temperature + " - velocity - " + velocity + " - confort" + confort);
+                console.log("conversation completed with values: id - " + alias + " mode - " + mode + " temperature - " + temperatura + " - velocity - " + velocità + " - confort" + confort);
                 
                 switch (mode) {
     				case "AUTOMATICO":
@@ -402,8 +411,8 @@ askRecap = function(response, convo) {
                 var data = JSON.stringify({
                     'alias': alias,
                     'mode': modalità,
-                    'speed': velocity,
-                    'temperature': temperature,
+                    'speed': velocità,
+                    'temperature': temperatura,
                     'confort': confort
                 });
 
