@@ -285,7 +285,8 @@ askObjectPassword = function(response, convo) {
 askConfortIndex = function(response, convo) {
     convo.ask(confortQuestion, function(response, convo) {
 		
-		var confort = convo.extractResponse(confortQuestion);
+		var confortString = convo.extractResponse(confortQuestion);
+		var confort = parseInt(confortString);
 		if(confort < 0 && confort > 10){
 			convo.say('Si prega di inserire una valore compreso tra 1 e 10');
             convo.repeat();
