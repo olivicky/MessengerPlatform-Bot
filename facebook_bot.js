@@ -290,14 +290,14 @@ askConfortIndex = function(response, convo) {
 		
 		if(regex.test(confortString)){
 			console.log("Test superato range [1-10]");
-			convo.say('Si prega di inserire una valore compreso tra 1 e 10');
-            convo.repeat();
-            convo.next();
+			askRecap(response, convo);
+        	convo.next();
 		}
 		else{
 			console.log("Test non superato superato range [1-10]");
-			askRecap(response, convo);
-        	convo.next();
+        	convo.say('Si prega di inserire una valore compreso tra 1 e 10');
+            convo.repeat();
+            convo.next();
 		}
 		
     });
