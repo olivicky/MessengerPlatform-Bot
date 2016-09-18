@@ -152,7 +152,8 @@ controller.setupWebserver(process.env.PORT || 5000, function(err, webserver) {
 
 
 controller.hears(['ciao', 'CIAO', 'Ciao'], 'message_received', function(bot, message) {
-    bot.startConversation(message, askObjectId);
+    //bot.startConversation(message, askObjectId);
+    bot.startConversation(message, askOperation);
 });
 
 askObjectId = function(response, convo) {
@@ -225,7 +226,7 @@ askOperation = function(response, convo) {
     }, {
         default: true,
         callback: function(response, convo) {
-            convo.say('Si prega di inserire una delle risposte suggerite.s');
+            convo.say('Si prega di inserire una delle risposte suggerite.');
             convo.repeat();
             convo.next();
         }
@@ -284,6 +285,8 @@ askObjectPassword = function(response, convo) {
 askConfortIndex = function(response, convo) {
     convo.ask(confortQuestion, function(response, convo) {
 		console.log("risposta al valore di confort: " + response);
+		var confort = convo.extractResponse(confortQuestion);
+		console.log("risposta al valore di confort seconda ipotesi: " + confort);
         askRecap(response, convo);
         convo.next();
     });
@@ -304,27 +307,6 @@ askFanVelocity = function(response, convo) {
         convo.next();
     });
 }
-
-askTurnOff = function(response, convo) {
-    convo.ask('Sei sicuro di voler spegnere il dispositivo?', [{
-        pattern: bot.utterances.yes,
-        callback: function(response, convo) {
-            convo.say('Perfetto! Spengo il dispositivo.');
-            convo.silentRepeat();
-            convo.next();
-        }
-    }, {
-        pattern: bot.utterances.no,
-        default: true,
-        callback: function(response, convo) {
-            askOperation(response, convo);
-            convo.next();
-        }
-    }]);
-
-}
-
-
 
 askRecap = function(response, convo) {
     var alias = convo.extractResponse(idQuestion);
