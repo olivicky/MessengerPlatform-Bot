@@ -287,7 +287,8 @@ askConfortIndex = function(response, convo) {
 		
 		var confortString = convo.extractResponse(confortQuestion);
 		var confort = parseInt(confortString);
-		if(confort < 0 && confort > 10){
+		console.log(confort)
+		if(confort < 0 || confort > 10){
 			convo.say('Si prega di inserire una valore compreso tra 1 e 10');
             convo.repeat();
             convo.next();
