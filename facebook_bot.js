@@ -284,35 +284,60 @@ askObjectPassword = function(response, convo) {
 
 askConfortIndex = function(response, convo) {
     convo.ask(confortQuestion, function(response, convo) {
-		
+		var regex = new RegExp('^(10|[1-9])$');
 		var confortString = convo.extractResponse(confortQuestion);
 		var confort = parseInt(confortString);
-		console.log(confort)
-		if(confort < 0 || confort > 10){
+		
+		if(regex.test(confortString)){
+			console.log("Test superato range [1-10]");
 			convo.say('Si prega di inserire una valore compreso tra 1 e 10');
             convo.repeat();
             convo.next();
 		}
 		else{
-        	askRecap(response, convo);
+			console.log("Test non superato superato range [1-10]");
+			askRecap(response, convo);
         	convo.next();
-        }
+		}
+		
     });
 }
 
 askTemperature = function(response, convo) {
     convo.ask(temperatureQuestion, function(response, convo) {
-        convo.say("Ok!");
-        askFanVelocity(response, convo);
-        convo.next();
+    	var temperatureString = convo.extractResponse(temperatureQuestion);
+		var temperature = parseInt(temperatureString);
+		
+		if(temperature < 16 || temperature > 27){
+			convo.say('Si prega di inserire una valore compreso tra 16 e 27');
+            convo.repeat();
+            convo.next();
+		}
+		else{
+        	convo.say("Ok!");
+        	askFanVelocity(response, convo);
+        	convo.next();
+        }
+ 
     });
 }
 
 askFanVelocity = function(response, convo) {
     convo.ask(fanQuestion, function(response, convo) {
-        convo.say("Perfetto!");
-        askRecap(response, convo);
-        convo.next();
+    	var fanString = convo.extractResponse(fanQuestion);
+		var fan = parseInt(fanString);
+		
+		if((fan < 0|| fan > 4) && (fanString.indexOf(".") != -1)){
+			convo.say('Si prega di inserire una valore compreso tra 1 e 4');
+            convo.repeat();
+            convo.next();
+		}
+		else{
+        	convo.say("Perfetto!");
+        	askRecap(response, convo);
+        	convo.next();
+        }
+   
     });
 }
 
