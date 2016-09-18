@@ -210,7 +210,7 @@ askOperation = function(response, convo) {
             convo.next();
         }
     }, {
-        pattern: new RegExp(/^(VENTILATORE|ventilatore|Deumidificatore)/i),
+        pattern: new RegExp(/^(VENTILATORE|ventilatore|Ventilatore)/i),
         callback: function(response, convo) {
             convo.say('Bene! continuiamo......');
             askTemperature(response, convo);
@@ -324,10 +324,10 @@ askRecap = function(response, convo) {
     var confort = convo.extractResponse(confortQuestion);
     var recapQuestion;
     
-    if(mode == "AUTOMATICO"){
+    if(mode == "AUTOMATICO" || mode == "Automatico" || mode == "automatico"){
     	recapQuestion = "Sei sicuro di voler cambiare lo stato del dispositivo " + alias + " in modalità: " + mode + " e indice di confort: " + confort + "?";
     }
-    else if(mode == "SPEGNI"){
+    else if(mode == "SPEGNI" || mode == "Spegni" || mode == "spegni"){
     	recapQuestion = "Sei sicuro di voler spegnere il dispositivo?";
     }
     else{
