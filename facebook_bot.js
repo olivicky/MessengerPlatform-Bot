@@ -309,7 +309,7 @@ askTemperature = function(response, convo) {
     	var temperatureString = convo.extractResponse(temperatureQuestion);
 		var temperature = parseInt(temperatureString);
 		
-		if(regex.test(confortString)){
+		if(regex.test(temperatureString)){
 			console.log("Test superato range [16-27]");
 			convo.say("Ok!");
         	askFanVelocity(response, convo);
@@ -330,7 +330,7 @@ askFanVelocity = function(response, convo) {
     	var fanString = convo.extractResponse(fanQuestion);
 		var fan = parseInt(fanString);
 		
-		if(regex.test(confortString)){
+		if(regex.test(fanString)){
 			console.log("Test superato range [16-27]");
 			convo.say("Perfetto!");
         	askRecap(response, convo);
