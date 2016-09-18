@@ -305,18 +305,20 @@ askConfortIndex = function(response, convo) {
 
 askTemperature = function(response, convo) {
     convo.ask(temperatureQuestion, function(response, convo) {
+    	var regex = new RegExp('^(1[6-9]|2[0-7])$');
     	var temperatureString = convo.extractResponse(temperatureQuestion);
 		var temperature = parseInt(temperatureString);
 		
-		if(temperature < 16 || temperature > 27){
-			convo.say('Si prega di inserire una valore compreso tra 16 e 27');
-            convo.repeat();
-            convo.next();
-		}
-		else{
-        	convo.say("Ok!");
+		if(regex.test(confortString)){
+			console.log("Test superato range [16-27]");
+			convo.say("Ok!");
         	askFanVelocity(response, convo);
         	convo.next();
+		}
+		else{
+        	convo.say('Si prega di inserire una valore compreso tra 16 e 27');
+            convo.repeat();
+            convo.next();
         }
  
     });
@@ -324,18 +326,20 @@ askTemperature = function(response, convo) {
 
 askFanVelocity = function(response, convo) {
     convo.ask(fanQuestion, function(response, convo) {
+    	var regex = new RegExp('^([1-4])$');
     	var fanString = convo.extractResponse(fanQuestion);
 		var fan = parseInt(fanString);
 		
-		if((fan < 0|| fan > 4) && (fanString.indexOf(".") != -1)){
-			convo.say('Si prega di inserire una valore compreso tra 1 e 4');
-            convo.repeat();
-            convo.next();
-		}
-		else{
-        	convo.say("Perfetto!");
+		if(regex.test(confortString)){
+			console.log("Test superato range [16-27]");
+			convo.say("Perfetto!");
         	askRecap(response, convo);
         	convo.next();
+		}
+		else{
+        	convo.say('Si prega di inserire una valore compreso tra 1 e 4');
+            convo.repeat();
+            convo.next();
         }
    
     });
