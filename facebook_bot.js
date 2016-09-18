@@ -152,8 +152,7 @@ controller.setupWebserver(process.env.PORT || 5000, function(err, webserver) {
 
 
 controller.hears(['ciao', 'CIAO', 'Ciao'], 'message_received', function(bot, message) {
-    //bot.startConversation(message, askObjectId);
-    bot.startConversation(message, askOperation);
+    bot.startConversation(message, askObjectId);
 });
 
 askObjectId = function(response, convo) {
