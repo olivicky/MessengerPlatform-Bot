@@ -284,11 +284,17 @@ askObjectPassword = function(response, convo) {
 
 askConfortIndex = function(response, convo) {
     convo.ask(confortQuestion, function(response, convo) {
-		console.log("risposta al valore di confort: " + response);
+		
 		var confort = convo.extractResponse(confortQuestion);
-		console.log("risposta al valore di confort seconda ipotesi: " + confort);
-        askRecap(response, convo);
-        convo.next();
+		if(confort < 0 && confort > 10){
+			convo.say('Si prega di inserire una valore compreso tra 1 e 10');
+            convo.repeat();
+            convo.next();
+		}
+		else{
+        	askRecap(response, convo);
+        	convo.next();
+        }
     });
 }
 
