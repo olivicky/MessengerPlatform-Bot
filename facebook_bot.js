@@ -150,6 +150,12 @@ controller.setupWebserver(process.env.PORT || 5000, function(err, webserver) {
     });
 });
 
+controller.on('messaging_postbacks', function(bot,message){
+	bot.reply(message, 'Benvenuto');
+  bot.reply(message, ' sarò la tua assistente e ti guiderò nel controllo del tuo condizionatore. Per iniziare digita Ciao.');
+  ;
+});
+
 
 controller.hears(['ciao', 'CIAO', 'Ciao'], 'message_received', function(bot, message) {
     bot.startConversation(message, askObjectId);
