@@ -272,7 +272,7 @@ askObjectPassword = function(response, convo) {
                 	var temperature = parseInt(response.temperature);
                 	var humidity = parseInt(response.humidity);
                 	if(temperature > 0){
-                		convo.say("La temperatura attuale è di "+ temperature + " e umidità" + humidity + "%" );
+                		convo.say("La temperatura attuale è di "+ temperature + " e umidità " + humidity + "%" );
                 	}
                 	askOperation(response, convo);
                 	convo.next();
