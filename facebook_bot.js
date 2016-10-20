@@ -269,6 +269,11 @@ askObjectPassword = function(response, convo) {
                 var response = JSON.parse(body); // Show the HTML for the Google homepage.
                 if(response.response == 'true'){
                 	convo.say("Bene! Siamo pronti per iniziare.");
+                	var temperature = parseInt(response.temperature);
+                	var humidity = parseInt(response.humidity);
+                	if(temperature > 0){
+                		convo.say("La temperatura attuale è di "+ temperature + " e umidità" + humidity + "%" );
+                	}
                 	askOperation(response, convo);
                 	convo.next();
                 }
