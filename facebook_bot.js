@@ -328,7 +328,7 @@ askTemperature = function(response, convo, defaultValue) {
 		
     convo.ask(tempQuestion, function(response, convo) {
     	var regex = new RegExp('^(1[6-9]|2[0-7])$');
-    	var temperatureString = convo.extractResponse(temperatureQuestion);
+    	var temperatureString = convo.extractResponse(tempQuestion);
 		var temperature = parseInt(temperatureString);
 		
 		if(regex.test(temperatureString)){
