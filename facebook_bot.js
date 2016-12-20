@@ -93,7 +93,7 @@ var url = 'http://dmautomation-domoticadomain.rhcloud.com';
 var idQuestion = "Ciao quale dispositivo vuoi controllare?";
 var passwordQuestion = "Inserisci la password: "
 var modeQuestion = "Che operazione vuoi compiere? Scrivi AUTOMATICO, SPEGNI, INVERNO, ESTATE, VENTILATORE, DEUMIDIFICATORE";
-var fanQuestion = "A che velocità vuoi impostare il condizionatore?";
+var fanQuestion = "A che velocità vuoi impostare il condizionatore?(default 1)";
 var temperatureQuestion = "Quale temperatura vuoi impostare?";
 var confortQuestion = "Che indice benessere preferisci?";
 
@@ -187,45 +187,52 @@ askObjectId = function(response, convo) {
 
 askOperation = function(response, convo) {
     convo.ask(modeQuestion, [{
-        pattern: new RegExp(/^(AUTOMATICO|automatico|Automatico)/i),
+        pattern: new RegExp(/^(AUTOMATICO|automatico|Automatico|A|a)/i),
         callback: function(response, convo) {
             convo.say('OK!');
             askConfortIndex(response, convo);
             convo.next();
         }
     }, {
-        pattern: new RegExp(/^(SPEGNI|spegni|Spegni|Spento|spento)/i),
+        pattern: new RegExp(/^(SPEGNI|spegni|Spegni|Spento|spento|S|s)/i),
         callback: function(response, convo) {
             askRecap(response,convo);
             convo.next();
 
         }
     }, {
-        pattern: new RegExp(/^(ESTATE|estate|Estate|freddo|Freddo)/i),
+        pattern: new RegExp(/^(ESTATE|estate|Estate|freddo|Freddo|E|e)/i),
         callback: function(response, convo) {
             convo.say('Bene! continuiamo...');
-            askTemperature(response, convo);
+            askTemperature(response, convo, 21);
             convo.next();
         }
     }, {
-        pattern: new RegExp(/^(INVERNO|inverno|Inverno|caldo|Caldo)/i),
+        pattern: new RegExp(/^(INVERNO|inverno|Inverno|caldo|Caldo|I|i)/i),
         callback: function(response, convo) {
             convo.say('Bene! continuiamo......');
-            askTemperature(response, convo);
+            askTemperature(response, convo, 26);
             convo.next();
         }
     }, {
-        pattern: new RegExp(/^(VENTILATORE|ventilatore|Ventilatore)/i),
+        pattern: new RegExp(/^(VENTILATORE|ventilatore|Ventilatore|V|v)/i),
         callback: function(response, convo) {
             convo.say('Bene! continuiamo......');
-            askTemperature(response, convo);
+            askTemperature(response, convo, null);
             convo.next();
         }
     }, {
-        pattern: new RegExp(/^(DEUMIDIFICATORE|deumidificatore|Deumidificatore)/i),
+        pattern: new RegExp(/^(DEUMIDIFICATORE|deumidificatore|Deumidificatore|D|d)/i),
         callback: function(response, convo) {
             convo.say('Bene! continuiamo......');
-            askTemperature(response, convo);
+            askTemperature(response, convo, null);
+            convo.next();
+        }
+    }, {
+        pattern: new RegExp(/^(CIAO|Ciao|ciao|C|c)/i),
+        callback: function(response, convo) {
+            convo.say('Ho completato le tue richieste. Ciao a presto.');
+            convo.silentRepeat();
             convo.next();
         }
     }, {
@@ -313,8 +320,13 @@ askConfortIndex = function(response, convo) {
     });
 }
 
-askTemperature = function(response, convo) {
-    convo.ask(temperatureQuestion, function(response, convo) {
+askTemperature = function(response, convo, defaultValue) {
+	var tempQuestion = temperatureQuestion;
+	if(defaultValue != null){
+		tempQuestion = tempQuestion + "(default " +defaultValue + "°)";
+	}
+		
+    convo.ask(tempQuestion, function(response, convo) {
     	var regex = new RegExp('^(1[6-9]|2[0-7])$');
     	var temperatureString = convo.extractResponse(temperatureQuestion);
 		var temperature = parseInt(temperatureString);
