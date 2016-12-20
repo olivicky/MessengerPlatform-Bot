@@ -395,7 +395,7 @@ askRecap = function(response, convo) {
                 var alias = convo.extractResponse(idQuestion);
                 var mode = convo.extractResponse(modeQuestion);
                 mode = mode.toUpperCase();
-                var temperature = convo.extractResponse(temperatureQuestion);
+                var temperature = convo.extractResponse(tempQuestion);
                 var velocity = convo.extractResponse(fanQuestion);
                 var indice = convo.extractResponse(confortQuestion);
                 var modalità;
