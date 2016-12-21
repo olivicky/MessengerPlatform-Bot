@@ -433,6 +433,18 @@ askRecap = function(response, convo) {
                 else if(mode == "E"){
                 	mode = "ESTATE";
                 }
+                else if(mode == "V"){
+                	mode = "VENTILATORE";
+                }
+                else if(mode == "A"){
+                	mode = "AUTOMATICO";
+                }
+                else if(mode == "S"){
+                	mode = "SPEGNI";
+                }
+                else if(mode == "D"){
+                	mode = "DEUMIDIFICATORE";
+                }
                 
                 
                 //     		
