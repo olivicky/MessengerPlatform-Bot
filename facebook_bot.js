@@ -384,6 +384,7 @@ askRecap = function(response, convo) {
     else if(mode == "VENTILATORE" || mode == "Ventilatore" || mode == "ventilatore" || mode == "V" || mode == "v"){
     	recapQuestion = "Sei sicuro di voler cambiare lo stato del dispositivo " + alias + " in modalità: " + mode + " temperatura: 21° e velocità: " + velocity + "?";
     }
+    
     else{
     	recapQuestion = "Sei sicuro di voler cambiare lo stato del dispositivo " + alias + " in modalità: " + mode + " temperatura: " + temperature + " e velocità: " + velocity + "?";
     }
