@@ -427,6 +427,13 @@ askRecap = function(response, convo) {
                 	velocità = velocity;
                 }
                 
+                if(mode == "I"){
+                	mode = "INVERNO";
+                }
+                else if(mode == "E"){
+                	mode = "ESTATE";
+                }
+                
                 
                 //     		
                 console.log("conversation completed with values: id - " + alias + " mode - " + mode + " temperature - " + temperatura + " - velocity - " + velocità + " - confort" + confort);
