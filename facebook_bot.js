@@ -218,7 +218,7 @@ askOperation = function(response, convo) {
         pattern: new RegExp(/^(VENTILATORE|ventilatore|Ventilatore|V|v)/i),
         callback: function(response, convo) {
             convo.say('Bene! continuiamo......');
-            askTemperature(response, convo, null);
+            askFanVelocity(response, convo);
             convo.next();
         }
     }, {
@@ -375,11 +375,14 @@ askRecap = function(response, convo) {
     var confort = convo.extractResponse(confortQuestion);
     var recapQuestion;
     
-    if(mode == "AUTOMATICO" || mode == "Automatico" || mode == "automatico"){
+    if(mode == "AUTOMATICO" || mode == "Automatico" || mode == "automatico" || mode == "A" || mode == "a" ){
     	recapQuestion = "Sei sicuro di voler cambiare lo stato del dispositivo " + alias + " in modalità: " + mode + " e indice di confort: " + confort + "?";
     }
-    else if(mode == "SPEGNI" || mode == "Spegni" || mode == "spegni"){
+    else if(mode == "SPEGNI" || mode == "Spegni" || mode == "spegni" || mode == "S" || mode == "s"){
     	recapQuestion = "Sei sicuro di voler spegnere il dispositivo?";
+    }
+    else if(mode == "VENTILATORE" || mode == "Ventilatore" || mode == "ventilatore" || mode == "V" || mode == "v"){
+    	recapQuestion = "Sei sicuro di voler cambiare lo stato del dispositivo " + alias + " in modalità: " + mode + " temperatura: 21° e velocità: " + velocity + "?";
     }
     else{
     	recapQuestion = "Sei sicuro di voler cambiare lo stato del dispositivo " + alias + " in modalità: " + mode + " temperatura: " + temperature + " e velocità: " + velocity + "?";
@@ -443,6 +446,7 @@ askRecap = function(response, convo) {
         				break;
     				case "VENTILATORE":
         				modalità = "4";
+        				temperatura = "21";
         				break;
     				case "DEUMIDIFICATORE":
         				modalità = "3";
