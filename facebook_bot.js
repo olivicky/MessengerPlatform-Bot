@@ -370,7 +370,7 @@ askFanVelocity = function(response, convo) {
 askRecap = function(response, convo) {
     var alias = convo.extractResponse(idQuestion);
     var mode = convo.extractResponse(modeQuestion);
-    var temperature = convo.extractResponse(temperatureQuestion);
+    var temperature = convo.extractResponse(tempQuestion);
     var velocity = convo.extractResponse(fanQuestion);
     var confort = convo.extractResponse(confortQuestion);
     var recapQuestion;
