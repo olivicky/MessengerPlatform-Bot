@@ -321,14 +321,13 @@ askConfortIndex = function(response, convo) {
 }
 
 askTemperature = function(response, convo, defaultValue) {
-	var tempQuestion = temperatureQuestion;
 	if(defaultValue != null){
-		tempQuestion = tempQuestion + "(default " +defaultValue + "°)";
+		temperatureQuestion = temperatureQuestion + "(default " +defaultValue + "°)";
 	}
 		
     convo.ask(tempQuestion, function(response, convo) {
     	var regex = new RegExp('^(1[6-9]|2[0-7])$');
-    	var temperatureString = convo.extractResponse(tempQuestion);
+    	var temperatureString = convo.extractResponse(temperatureQuestion);
 		var temperature = parseInt(temperatureString);
 		
 		if(regex.test(temperatureString)){
@@ -370,7 +369,7 @@ askFanVelocity = function(response, convo) {
 askRecap = function(response, convo) {
     var alias = convo.extractResponse(idQuestion);
     var mode = convo.extractResponse(modeQuestion);
-    var temperature = convo.extractResponse(tempQuestion);
+    var temperature = convo.extractResponse(temperatureQuestion);
     var velocity = convo.extractResponse(fanQuestion);
     var confort = convo.extractResponse(confortQuestion);
     var recapQuestion;
