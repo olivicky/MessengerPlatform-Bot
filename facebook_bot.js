@@ -90,11 +90,11 @@ var localtunnel = require('localtunnel');
 var request = require('request');;
 
 var url = 'http://dmautomation-domoticadomain.rhcloud.com';
-var idQuestion = "Ciao quale dispositivo vuoi controllare?";
+var idQuestion = "Ciao quale DomiWii vuoi controllare?";
 var passwordQuestion = "Inserisci la password: "
-var modeQuestion = "Che operazione vuoi compiere? Scrivi AUTOMATICO(A), SPEGNI(S), INVERNO(I), ESTATE(E), VENTILATORE(V), DEUMIDIFICATORE(D) oppure CIAO per uscire";
-var fanQuestion = "A che velocità vuoi impostare il condizionatore?(default 1)";
-var temperatureQuestion = "Quale temperatura vuoi impostare?";
+var modeQuestion = "Basta che digiti il comando o la sua iniziale...oppure scrivi Ciao per uscire!";
+var fanQuestion = "Che velocità vuoi impostare?(default 1)";
+var temperatureQuestion = "Che temperatura vuoi impostare?";
 var confortQuestion = "Che indice benessere preferisci?";
 
 const cli = commandLineArgs([{
@@ -186,6 +186,8 @@ askObjectId = function(response, convo) {
 }
 
 askOperation = function(response, convo) {
+    convo.say('Che cosa vuoi fare? Vuoi gestire il condizionatore?');
+    convo.say('Questi sono i comandi che puoi inviare: Automatico, Inverno, Estate, Ventilatore, Deumidificatore, Spegni.');
     convo.ask(modeQuestion, [{
         pattern: new RegExp(/^(AUTOMATICO|automatico|Automatico|A|a)/i),
         callback: function(response, convo) {
@@ -238,7 +240,7 @@ askOperation = function(response, convo) {
     }, {
         default: true,
         callback: function(response, convo) {
-            convo.say('Si prega di inserire una delle risposte suggerite.');
+            convo.say('Scusami...ma non mi è chiaro che comando hai digitato...');
             convo.repeat();
             convo.next();
         }
@@ -279,18 +281,18 @@ askObjectPassword = function(response, convo) {
                 	var temperature = parseInt(response.temperature);
                 	var humidity = parseInt(response.humidity);
                 	if(temperature > 0){
-                		convo.say("La temperatura attuale è di "+ temperature + " e umidità " + humidity + "%" );
+                		convo.say("In questo momento il DomiWii sta misurando una temperatura ambiente di "+ temperature + "° e una umidità relativa di" + humidity + "%" );
                 	}
                 	askOperation(response, convo);
                 	convo.next();
                 }
                 else{
-                	convo.say("Password errata. Riprova o chiudi la chat.");
+                	convo.say("Ops...la password è errata! Riproviamo");
                 	convo.silentRepeat();
                 	convo.next();
                 }
             } else {
-                convo.say("Password errata. Riprova o chiudi la chat.");
+                convo.say("Ops...la password è errata! Riproviamo");
                 convo.silentRepeat();
                 convo.next();
             }
@@ -337,7 +339,7 @@ askTemperature = function(response, convo, defaultValue) {
         	convo.next();
 		}
 		else{
-        	convo.say('Si prega di inserire una valore compreso tra 16 e 27');
+        	convo.say('Scusami...ma dovresti inserire un valore compreso tra 16° e 27° C!');
             convo.repeat();
             convo.next();
         }
@@ -358,7 +360,7 @@ askFanVelocity = function(response, convo) {
         	convo.next();
 		}
 		else{
-        	convo.say('Si prega di inserire una valore compreso tra 1 e 4');
+        	convo.say('Scusami....ma dovresti inserire un valore compreso tra 1 e 4!');
             convo.repeat();
             convo.next();
         }
@@ -373,19 +375,33 @@ askRecap = function(response, convo) {
     var velocity = convo.extractResponse(fanQuestion);
     var confort = convo.extractResponse(confortQuestion);
     var recapQuestion;
+    var mod;
+    
     
     if(mode == "AUTOMATICO" || mode == "Automatico" || mode == "automatico" || mode == "A" || mode == "a" ){
-    	recapQuestion = "Sei sicuro di voler cambiare lo stato del dispositivo " + alias + " in modalità: " + mode + " e indice di confort: " + confort + "?";
+    	recapQuestion = "Sei sicuro di voler attivare il condizionatore controllato da DomiWii (" + alias + ") in modalità Automatico e indice di confort: " + confort + "?";
     }
     else if(mode == "SPEGNI" || mode == "Spegni" || mode == "spegni" || mode == "S" || mode == "s"){
-    	recapQuestion = "Sei sicuro di voler spegnere il dispositivo?";
+    	recapQuestion = "Sei sicuro di voler spegnere il condizionatore controllato da DomiWii (" + alias + ") ?";
     }
     else if(mode == "VENTILATORE" || mode == "Ventilatore" || mode == "ventilatore" || mode == "V" || mode == "v"){
-    	recapQuestion = "Sei sicuro di voler cambiare lo stato del dispositivo " + alias + " in modalità: " + mode + " temperatura: 21° e velocità: " + velocity + "?";
+    	recapQuestion = "Sei sicuro di voler attivare il condizionatore controllato da DomiWii (" + alias + ") in modalità Ventilatore, Temperatura: 21°C e velocità " + velocity + "?";
     }
     
     else{
-    	recapQuestion = "Sei sicuro di voler cambiare lo stato del dispositivo " + alias + " in modalità: " + mode + " temperatura: " + temperature + " e velocità: " + velocity + "?";
+    			if(mode == "I"){
+                	mod = "Inverno";
+                }
+                else if(mode == "E"){
+                	mod = "Estate";
+                }
+                else if(mode == "D"){
+                	mod = "Deumidificatore";
+                }
+                else{
+                	mod = mode;
+                }
+    	recapQuestion = "Sei sicuro di voler attivare il condizionatore controllato da DomiWii (" + alias + ") in modalità " + mod + ", Temperatura " + temperature + "°C e velocità: " + velocity + "?";
     }
 
 
@@ -501,7 +517,7 @@ askRecap = function(response, convo) {
                         var response = JSON.parse(body); 
                 		if(response.response == "true"){ 
                 			console.log("Entrato nell'if perchè la risposta è true");
-                        	convo.say('Operazione effettuata. Ho completato le tue richieste. Ciao a presto.');
+                        	convo.say('Ottimo! Ho inviato il comando al condizionatore...a presto...ciao!');
                         	convo.silentRepeat();
                         	convo.next();
                         }
