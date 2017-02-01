@@ -281,7 +281,7 @@ askObjectPassword = function(response, convo) {
                 	var temperature = parseInt(response.temperature);
                 	var humidity = parseInt(response.humidity);
                 	if(temperature > 0){
-                		convo.say("In questo momento il DomiWii sta misurando una temperatura ambiente di "+ temperature + "° e una umidità relativa di" + humidity + "%" );
+                		convo.say("In questo momento il DomiWii sta misurando una temperatura ambiente di "+ temperature + "° e una umidità relativa di " + humidity + "%" );
                 	}
                 	askOperation(response, convo);
                 	convo.next();
